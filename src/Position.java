@@ -2,6 +2,7 @@ public class Position{
 
     private int xPos;
     private int yPos;
+    private Piece currentPiece;
 
     public Position(int x, int y){
         xPos = x;
@@ -22,6 +23,10 @@ public class Position{
 
     public int getYDistance(Position other){ //A positive value means going up on the board
         return (other.yPos - this.yPos);
+    }
+
+    public Piece getCurrentPiece() {
+        return currentPiece;
     }
 
 }

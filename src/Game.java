@@ -21,7 +21,7 @@ public class Game {
         
         while (!gameOver) {
             for (int i = 0;i<playerList.length;i++) {
-                System.out.println("Player "+i+"'s turn");
+                System.out.println(playerList[i].getName()+"'s turn");
             }
             checkWin();
         }
