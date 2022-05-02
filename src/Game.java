@@ -1,9 +1,11 @@
+import java.util.Scanner;
 public class Game {
     
     private Board board;
     private Player[] playerList;
     private Player currentTurn;
     private boolean gameOver;
+    Scanner reader = new Scanner(System.in);
 
     public Game(Player[] playerList,int boardHeight,int boardWidth) {
         this.playerList = playerList;
@@ -21,19 +23,36 @@ public class Game {
         
         while (!gameOver) {
             for (int i = 0;i<playerList.length;i++) {
-                System.out.println(playerList[i].getName()+"'s turn");
+                currentTurn = playerList[i];
+                System.out.println(currentTurn.getName()+"'s turn");
+                board.display();
+                doTurn();
+                if (checkWin()){
+                    return currentTurn;
+                }
             }
-            checkWin();
+            
         }
         return playerList[0];
     }
 
-    private void checkWin() {
-        gameOver = true; //temporary statement
+    private boolean checkWin() {
+        return true; //temporary placeholder statement
     }
 
-    private void movePiece() {
+    private void movePiece(Position initial, Position end) {
+        if (end.getCurrentPiece()!=null) {
+            System.out.println(end.getCurrentPiece()+" has been removed"); //Later this will be added to a score system
+        }
+        end.setCurrentPiece(initial.getCurrentPiece());
+        initial.setCurrentPiece(null);
+        //To be added: adding move to a move history
+    }
 
+    private void doTurn() {
+        //To be added: Stalemate checking
+        //To be added: Get and validate user input
+        movePiece(board.getPosition(0, 0),board.getPosition(0, 0)); //temporary placeholder statement
     }
 
 }

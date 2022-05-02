@@ -29,4 +29,8 @@ public class Position{
         return currentPiece;
     }
 
+    public void setCurrentPiece(Piece newPiece) {
+        currentPiece = newPiece;
+    }
+
 }
