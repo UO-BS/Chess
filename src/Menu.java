@@ -39,7 +39,7 @@ public class Menu {
         }
 
         Player winner = currentGame.runGame();
-        System.out.println(winner.playerName+" Wins!");
+        System.out.println(winner.getName()+" Wins!");
 
         reader.close();
     }
