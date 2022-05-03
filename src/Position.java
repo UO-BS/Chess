@@ -33,4 +33,18 @@ public class Position{
         currentPiece = newPiece;
     }
 
+    public static int stringToXPosition(String position) {
+        return ((int)position.charAt(0)-65);
+    }
+
+    public static int stringToYPosition(String position) {
+        return (int)position.charAt(1);
+    }
+
+    public String toString() {
+        Char yChar = (Character.toString((char) yPos+65 )+"  |");
+        Char xChar = Char.valueOf(xPos);
+        return new String(new Char[]{yChar,xChar});
+    }
+
 }
