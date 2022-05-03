@@ -31,7 +31,7 @@ public class Menu {
             currentGame = new Game(playerList,boardHeight,boardWidth);
         }
 
-        Player winner = currentGame.runGame();
+        Player winner = currentGame.runGame(reader);
         System.out.println(winner.getName()+" Wins!");
 
         reader.close();
