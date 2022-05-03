@@ -38,7 +38,7 @@ public class Position{
     }
 
     public static int stringToYPosition(String position) {
-        return (int)position.charAt(1);
+        return Character.getNumericValue(position.charAt(1))-1;
     }
 
     public String toString() {

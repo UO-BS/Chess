@@ -20,6 +20,6 @@ public abstract class Piece {
         this.inPlay = newState;
     }
 
-    public abstract validMove(Position initial, Position end);
+    public abstract canMove(Position initial, Position end);
 
 }

@@ -1,8 +1,8 @@
 public class Board {
 
     private Position[][] fullBoard;
-    private int rowNum;
-    private int columnNum;
+    private int rowNum; //x
+    private int columnNum; //y
 
     public Board(int rows, int columns) {
         this.rowNum = rows;
@@ -50,6 +50,23 @@ public class Board {
 
     public Position getPosition(int x, int y) {
         return fullBoard[x][y];
+    }
+
+    public boolean insideBoard(int x, int y) {
+        if (x > rowNum-1 || x<0 || y > columnNum-1 || y<0) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean insideBoard(Position position) {
+        int x = position.getX;
+        int y = position.getY;
+
+        if ( x > rowNum-1 || x<0 || y > columnNum-1 || y<0) {
+            return false;
+        }
+        return true;
     }
 
 }

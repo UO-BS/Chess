@@ -1,3 +1,4 @@
+import java.util.Scanner;
 public class Game {
     
     private Board board;
@@ -50,14 +51,62 @@ public class Game {
 
     private void doTurn(Scanner reader) {
         //To be added: Stalemate checking
-        //To be added: Validate user input
-        String movingPiece = Menu.getStringInput(reader, "What piece do you want to move?");
-        Position movingPiecePosition = board.getPosition(Position.stringToXPosition(movingPiece), Position.stringToYPosition(movingPiece));
+        Position start = new Position(-1,-1);
+        Position end = new Position(-1,-1);
 
-        String movedPiece = Menu.getStringInput(reader, "Where do you want to move?");
-        Position movedPiecePosition = board.getPosition(Position.stringToXPosition(movedPiece), Position.stringToYPosition(movedPiece));
+        do {
+            start = this.getStartMove(reader);
+            end = this.getEndMove(reader);
+        } while (!this.isValidMove(start,end));
+        movePiece(start,end);
+    }
 
-        movePiece(movingPiecePosition,movedPiecePosition);
+    private boolean isValidMove(Position startPosition,Position endPosition) {
+        return true; //placeholder statement
+    }
+
+    private Position getStartMove(Scanner reader) {
+        String movingPiece ="";
+        Position movingPiecePosition;
+        int x = -1;
+        int y = -1;
+
+        while (movingPiece.length()!=2 || !board.insideBoard(x,y)) {
+            movingPiece = Menu.getStringInput(reader, "What piece do you want to move?");
+            if (movingPiece.length()!=2) {
+                System.out.println("Not a Position");
+            } else {
+                x = Position.stringToXPosition(movingPiece);
+                y = Position.stringToYPosition(movingPiece);
+                if (!board.insideBoard(x,y)) {
+                    System.out.println("Position is ouside of the board");
+                }
+            }
+        }
+        movingPiecePosition = board.getPosition(x,y);
+        return movingPiecePosition;
+    }
+
+    private Position getEndMove(Scanner reader) {
+        String movedPiece ="";
+        Position movedPiecePosition;
+        int x = -1;
+        int y = -1;
+
+        while (movedPiece.length()!=2 || !board.insideBoard(x,y)) {
+            movedPiece = Menu.getStringInput(reader, "Where do you want to move?");
+            if (movedPiece.length()!=2) {
+                System.out.println("Not a Position");
+            } else {
+                x = Position.stringToXPosition(movedPiece);
+                y = Position.stringToYPosition(movedPiece);
+                if (!board.insideBoard(x,y)) {
+                    System.out.println("Position is ouside of the board");
+                }
+            }
+        }
+        movedPiecePosition = board.getPosition(x,y);
+        return movedPiecePosition;
     }
 
 }
