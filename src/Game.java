@@ -7,7 +7,7 @@ public class Game {
     private boolean gameOver;
     Scanner reader = new Scanner(System.in);
 
-    public Game(Player[] playerList,int boardHeight,int boardWidth) {
+    public Game(Player[] playerList,int boardHeight,int boardWidth) { //constructor for custom games
         this.playerList = playerList;
         board = new Board(boardHeight,boardWidth);
         gameOver = false;
@@ -43,6 +43,7 @@ public class Game {
     private void movePiece(Position initial, Position end) {
         if (end.getCurrentPiece()!=null) {
             System.out.println(end.getCurrentPiece()+" has been removed"); //Later this will be added to a score system
+            end.getCurrentPiece().setState(false);
         }
         end.setCurrentPiece(initial.getCurrentPiece());
         initial.setCurrentPiece(null);

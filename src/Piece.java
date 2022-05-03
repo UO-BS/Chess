@@ -5,7 +5,7 @@ public abstract class Piece {
 
     public Piece(Player player) {
         owner = player;
-        alive = true;
+        inPlay = true;
     }
 
     public Player getOwner() {
@@ -14,6 +14,10 @@ public abstract class Piece {
 
     public boolean getState() {
         return inPlay;
+    }
+
+    public void setState(boolean newState) {
+        this.inPlay = newState;
     }
 
     public abstract validMove(Position initial, Position end);

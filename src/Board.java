@@ -20,7 +20,10 @@ public class Board {
     public void display() {
         
         for (int i=rowNum;i>=0;i--) {
-            System.out.println("---------------------------------");
+            for (int j=0;j<columnNum;j++){
+                System.out.print("----");
+            }
+            System.out.println("");
             
             if (i==0){
                 
