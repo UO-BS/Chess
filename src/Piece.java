@@ -20,6 +20,6 @@ public abstract class Piece {
         this.inPlay = newState;
     }
 
-    public abstract boolean canMove(Position initial, Position end);
+    public abstract boolean canMove(Board board, Position initial, Position end);
 
 }
