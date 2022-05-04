@@ -46,7 +46,8 @@ public class Bishop extends Piece{
     }
 
     public String toString(){
-        return ((this.getOwner().getOrientation()==1)?"W":"B"+"B");
+        String color = (this.getOwner().getOrientation()==1)?"W":"B";
+        return (color+"B");
     }
 
 }

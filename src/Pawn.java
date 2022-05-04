@@ -22,7 +22,8 @@ public class Pawn extends Piece{
     }
 
     public String toString(){
-        return ((this.getOwner().getOrientation()==1)?"W":"B"+"P");
+        String color = (this.getOwner().getOrientation()==1)?"W":"B";
+        return (color+"P");
     }
 
 }

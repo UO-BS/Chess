@@ -1,12 +1,12 @@
 public class Board {
 
     private Position[][] fullBoard;
-    private int rowNum; //x
-    private int columnNum; //y
+    private int totalRow; //columnNumber
+    private int totalColumn; //rowNumber
 
     public Board(int rows, int columns) {
-        this.rowNum = rows;
-        this.columnNum = columns;
+        this.totalRow = rows;
+        this.totalColumn = columns;
         
         fullBoard = new Position[rows][columns];
         for (int i=0;i<rows;i++) {
@@ -19,8 +19,8 @@ public class Board {
 
     public void display() {
         
-        for (int i=rowNum;i>=0;i--) {
-            for (int j=0;j<columnNum;j++){
+        for (int i=totalRow;i>=0;i--) {
+            for (int j=0;j<totalColumn;j++){
                 System.out.print("----");
             }
             System.out.println("");
@@ -28,7 +28,7 @@ public class Board {
             if (i==0){
                 
                 System.out.print("* |");
-                for(int j=0;j<columnNum;j++) {
+                for(int j=0;j<totalColumn;j++) {
                     System.out.print(Character.toString((char) j+65 )+"  |");
                 }
                 System.out.println("");
@@ -36,7 +36,7 @@ public class Board {
             } else {
             
                 System.out.print(i +" |");
-                for(int j=0;j<columnNum;j++) {
+                for(int j=0;j<totalColumn;j++) {
                     if (fullBoard[i-1][j].getCurrentPiece()!=null) {
                         System.out.print(fullBoard[i-1][j].getCurrentPiece().toString());
                         System.out.print(" |");
@@ -52,25 +52,29 @@ public class Board {
 
     }
 
-    public Position getPosition(int x, int y) {
-        return fullBoard[x][y];
+    public Position getPosition(int rowNumber , int columnNumber) {
+        return fullBoard[rowNumber][columnNumber];
     }
 
-    public boolean insideBoard(int x, int y) {
-        if (x > rowNum-1 || x<0 || y > columnNum-1 || y<0) {
+    public boolean insideBoard(int rowNumber, int columnNumber) {
+        if (rowNumber > totalRow-1 || rowNumber<0 || columnNumber > totalColumn-1 || columnNumber<0) {
             return false;
         }
         return true;
     }
 
     public boolean insideBoard(Position position) {
-        int x = position.getX;
-        int y = position.getY;
+        int rowNumber = position.getX;
+        int columnNumber = position.getY;
 
-        if ( x > rowNum-1 || x<0 || y > columnNum-1 || y<0) {
+        if ( rowNumber > totalRow-1 || rowNumber<0 || columnNumber > totalColumn-1 || columnNumber<0) {
             return false;
         }
         return true;
+    }
+
+    public void setPiece(Piece newPiece, int rowNumber, int columnNumber) {
+        fullBoard[rowNumber][columnNumber].setCurrentPiece(newPiece);
     }
 
 }

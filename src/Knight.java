@@ -16,7 +16,8 @@ public class Knight extends Piece{
     }
 
     public String toString(){
-        return ((this.getOwner().getOrientation()==1)?"W":"B"+"N");
+        String color = (this.getOwner().getOrientation()==1)?"W":"B";
+        return (color+"N");
     }
 
 }

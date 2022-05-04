@@ -15,6 +15,23 @@ public class Game {
         this.playerList = playerList;
         board = new Board(8,8);
         gameOver = false;
+        
+        for (int p=0;p<playerList.length ;p++) {    //This is standard board generation
+            for (int i=0;i<8;i++) {
+                Pawn newPawn = new Pawn(playerList[p]);
+                board.setPiece(newPawn, ((8+ 2*playerList[p].getOrientation()) %9), i); //in this formula: 2* is the position of the row for the white pieces
+            }
+            board.setPiece(new King(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 3);
+            board.setPiece(new Queen(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 4);
+            board.setPiece(new Bishop(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 5);
+            board.setPiece(new Bishop(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 2);
+            board.setPiece(new Knight(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 1);
+            board.setPiece(new Knight(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 6);
+            board.setPiece(new Rook(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 0);
+            board.setPiece(new Rook(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 7);
+
+        }
+
     }
 
     public Player runGame() { //returns the winner of the game
@@ -82,7 +99,7 @@ public class Game {
                 }
             }
         }
-        movingPiecePosition = board.getPosition(x,y);
+        movingPiecePosition = board.getPosition(y,x); //NOTE: y comes first here since our array is board[rows][columns], but y=row and x=column
         return movingPiecePosition;
     }
 
@@ -104,7 +121,7 @@ public class Game {
                 }
             }
         }
-        movedPiecePosition = board.getPosition(x,y);
+        movedPiecePosition = board.getPosition(y,x); //NOTE: y comes first here since our array is board[rows][columns], but y=row and x=column
         return movedPiecePosition;
     }
 

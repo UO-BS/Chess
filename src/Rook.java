@@ -49,7 +49,8 @@ public class Rook extends Piece{
     }
 
     public String toString(){
-        return ((this.getOwner().getOrientation()==1)?"W":"B"+"R");
+        String color = (this.getOwner().getOrientation()==1)?"W":"B";
+        return (color+"R");
     }
 
 }

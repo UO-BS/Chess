@@ -10,7 +10,7 @@ public class Menu {
             Player[] playerList = new Player[2];
             for (int i =0; i<playerList.length;i++) {
                 String playerName = UserInterface.getStringInput( "What is the name of player "+(i+1)+": ");
-                playerList[i] = new Player(playerName);
+                playerList[i] = new Player(playerName,1+(-2)*i);
             }
             currentGame = new Game(playerList);
 

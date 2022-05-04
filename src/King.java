@@ -16,7 +16,8 @@ public class King extends Piece{
     }
 
     public String toString(){
-        return ((this.getOwner().getOrientation()==1)?"W":"B"+"K");
+        String color = (this.getOwner().getOrientation()==1)?"W":"B";
+        return (color+"K");
     }
 
 }
