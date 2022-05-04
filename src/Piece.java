@@ -22,6 +22,4 @@ public abstract class Piece {
 
     public abstract boolean canMove(Position initial, Position end);
 
-    public abstract Position[] validMoves(Position initial);
-
 }
