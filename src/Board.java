@@ -37,8 +37,12 @@ public class Board {
             
                 System.out.print(i +" |");
                 for(int j=0;j<columnNum;j++) {
-                    System.out.print("   |");
-                    //To be added: checking the current spot for a piece and displaying it
+                    if (fullBoard[i-1][j].getCurrentPiece()!=null) {
+                        System.out.print(fullBoard[i-1][j].getCurrentPiece().toString());
+                        System.out.print(" |");
+                    } else {
+                        System.out.print("   |");
+                    }
                 }
                 System.out.println("");
             }
