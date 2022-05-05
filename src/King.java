@@ -1,3 +1,4 @@
+import java.lang.Math;
 public class King extends Piece{
 
     public King(Player player) {
@@ -6,10 +7,10 @@ public class King extends Piece{
 
     public boolean canMove(Board board, Position initial, Position end) {
         //To be added: Check if spot is dangerous
-        int xDistance = inital.getXDistance(end);
-        int yDistance = inital.getYDistance(end);
+        int xDistance = initial.getXDistance(end);
+        int yDistance = initial.getYDistance(end);
         
-        if (abs(xDistance)>1 || abs(yDistance)>1 || (xDistance==0 && yDistance==0)) {
+        if (Math.abs(xDistance)>1 || Math.abs(yDistance)>1 || (xDistance==0 && yDistance==0)) {
             return false;
         }
         return true;

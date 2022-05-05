@@ -78,7 +78,16 @@ public class Game {
     }
 
     private boolean isValidMove(Position startPosition,Position endPosition) {
-        return true; //placeholder statement
+        //To be added: check if the player is in check
+        if (!startPosition.getCurrentPiece().canMove(board, startPosition, endPosition)) {
+            return false;
+        }
+        if (endPosition.getCurrentPiece()!=null) {
+            if (currentTurn==endPosition.getCurrentPiece().getOwner()){
+                return false;
+            }
+        }
+        return true;
     }
 
     private Position getStartMove() {
