@@ -14,7 +14,7 @@ public class Position{
     }
 
     public int getY() {
-        return xPos;
+        return yPos;
     }
 
     public int getXDistance(Position other){ //A positive value means going right on the board

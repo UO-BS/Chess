@@ -12,29 +12,31 @@ public class Queen extends Piece{
 
         if ((Math.abs(yDistance) == Math.abs(xDistance)) && (yDistance!=0)) {     //Bishop's movement
             if (xDistance >0 && yDistance >0) {//Positive x, Positive y direction
-                for (int i=0;i<Math.abs(yDistance);i++) {
-                    if (board.getPosition(initial.getX()+i, initial.getY()+i).getCurrentPiece()!=null){ 
+                for (int i=1;i<Math.abs(yDistance);i++) {
+                    if (board.getPosition(initial.getY()+i, initial.getX()+i).getCurrentPiece()!=null){ 
                         return false;
                     }
                 }
             }
             if (xDistance >0 && yDistance <0) {//Positive x, Negative y direction
-                for (int i=0;i<Math.abs(yDistance);i++) {
-                    if (board.getPosition(initial.getX()-i, initial.getY()+i).getCurrentPiece()!=null){ 
+                for (int i=1;i<Math.abs(yDistance);i++) {
+                    if (board.getPosition(initial.getY()-i,initial.getX()+i).getCurrentPiece()!=null){ 
+                        System.out.println(initial.getY());
+                        System.out.println(initial.getX());
                         return false;
                     }
                 }
             }
             if (xDistance <0 && yDistance >0) {//Negative x, Positive y direction
-                for (int i=0;i<Math.abs(yDistance);i++) {
-                    if (board.getPosition(initial.getX()+i, initial.getY()-i).getCurrentPiece()!=null){ 
+                for (int i=1;i<Math.abs(yDistance);i++) {
+                    if (board.getPosition(initial.getY()+i, initial.getX()-i).getCurrentPiece()!=null){ 
                         return false;
                     }
                 }
             }
             if (xDistance <0 && yDistance <0) {//Negative x, Negative y direction
-                for (int i=0;i<Math.abs(yDistance);i++) {
-                    if (board.getPosition(initial.getX()-i, initial.getY()-i).getCurrentPiece()!=null){ 
+                for (int i=1;i<Math.abs(yDistance);i++) {
+                    if (board.getPosition( initial.getY()-i,initial.getX()-i).getCurrentPiece()!=null){ 
                         return false;
                     }
                 }

@@ -52,7 +52,7 @@ public class Game {
     }
 
     private boolean checkWin() {
-        return true; //temporary placeholder statement
+        return false; //temporary placeholder statement
     }
 
     private void movePiece(Position initial, Position end) {
@@ -108,14 +108,14 @@ public class Game {
         int x = -1;
         int y = -1;
 
-        while (movingPiece.length()!=2 || !board.insideBoard(x,y)) {
+        while (movingPiece.length()!=2 || !board.insideBoard(y,x)) {
             movingPiece = UserInterface.getStringInput("From what position do you want to move a piece?");
             if (movingPiece.length()!=2) {
                 System.out.println("Not a Position");
             } else {
                 x = Position.stringToXPosition(movingPiece);
                 y = Position.stringToYPosition(movingPiece);
-                if (!board.insideBoard(x,y)) {
+                if (!board.insideBoard(y,x)) {
                     System.out.println("Position is ouside of the board");
                 }
             }

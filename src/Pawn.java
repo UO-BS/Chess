@@ -1,3 +1,4 @@
+import java.lang.Math;
 public class Pawn extends Piece{
 
     public Pawn(Player player) {
@@ -14,7 +15,7 @@ public class Pawn extends Piece{
             return true;
         }
         if (initial.getYDistance(end)==1*this.getOwner().getOrientation() 
-                && initial.getXDistance(end)==1 
+                && Math.abs(initial.getXDistance(end))==1 
                 && end.getCurrentPiece()!=null) {
             return true;
         }
