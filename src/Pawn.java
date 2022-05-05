@@ -11,6 +11,7 @@ public class Pawn extends Piece{
         //To be added: different rules around forward movement (cannot move forward no matter what piece is in front)
 
         if (initial.getYDistance(end)==1*this.getOwner().getOrientation() 
+                && initial.getXDistance(end)==0   
                 && end.getCurrentPiece()==null) {
             return true;
         }
