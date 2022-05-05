@@ -1,15 +1,22 @@
 import java.lang.Math;
 public class Pawn extends Piece{
+    
 
     public Pawn(Player player) {
         super(player);
     }
 
     public boolean canMove(Board board, Position initial, Position end) {
-        //To be added: Pawns can move 2 spaces forward if they have not been moved yet. 
-        //This will be added by searching the player's move history
-        //To be added: different rules around forward movement (cannot move forward no matter what piece is in front)
-
+        if (!this.getHasMoved()
+                && initial.getYDistance(end)==2*this.getOwner().getOrientation() 
+                && initial.getXDistance(end)==0) {
+            for (int i=1;i<=2;i++) {
+                if (board.getPosition( initial.getY()+i*this.getOwner().getOrientation(),initial.getX()).getCurrentPiece()!=null) {
+                    return false;
+                }
+            }
+            return true;
+        }
         if (initial.getYDistance(end)==1*this.getOwner().getOrientation() 
                 && initial.getXDistance(end)==0   
                 && end.getCurrentPiece()==null) {

@@ -56,6 +56,7 @@ public class Game {
     }
 
     private void movePiece(Position initial, Position end) {
+        initial.getCurrentPiece().setHasMoved(true);
         if (end.getCurrentPiece()!=null) {
             System.out.println(end.getCurrentPiece()+" has been removed"); //Later this will be added to a score system
             end.getCurrentPiece().setState(false);
