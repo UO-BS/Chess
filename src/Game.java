@@ -79,11 +79,23 @@ public class Game {
 
     private boolean isValidMove(Position startPosition,Position endPosition) {
         //To be added: check if the player is in check
-        if (!startPosition.getCurrentPiece().canMove(board, startPosition, endPosition)) {
+        if (startPosition.getCurrentPiece()==null) { //validating start position
+            System.out.println("No piece to move");
             return false;
+        } else {
+            if (currentTurn!=startPosition.getCurrentPiece().getOwner()) {
+                System.out.println("You cannot move this piece");
+                return false;
+            }
+            if (!startPosition.getCurrentPiece().canMove(board, startPosition, endPosition)) {
+                System.out.println("This piece cannot move to that position");
+                return false;
+            }
         }
-        if (endPosition.getCurrentPiece()!=null) {
+        
+        if (endPosition.getCurrentPiece()!=null) { //Validating end position
             if (currentTurn==endPosition.getCurrentPiece().getOwner()){
+                System.out.println("Position is occupied");
                 return false;
             }
         }
@@ -97,7 +109,7 @@ public class Game {
         int y = -1;
 
         while (movingPiece.length()!=2 || !board.insideBoard(x,y)) {
-            movingPiece = UserInterface.getStringInput("What piece do you want to move?");
+            movingPiece = UserInterface.getStringInput("From what position do you want to move a piece?");
             if (movingPiece.length()!=2) {
                 System.out.println("Not a Position");
             } else {
