@@ -70,11 +70,12 @@ public class Game {
     }
 
     private void movePiece(Position initial, Position end) {
-        initial.getCurrentPiece().setHasMoved(true);
+        initial.getCurrentPiece().setHasMoved(true); //May have to change this?
         if (end.getCurrentPiece()!=null) {
             System.out.println(end.getCurrentPiece()+" has been removed"); //Later this will be added to a score system
             end.getCurrentPiece().setState(false);
         }
+        initial.getCurrentPiece().setPosition(end);
         end.setCurrentPiece(initial.getCurrentPiece());
         initial.setCurrentPiece(null);
         //To be added: adding move to a move history
