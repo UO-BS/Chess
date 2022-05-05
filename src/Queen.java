@@ -50,14 +50,15 @@ public class Queen extends Piece{
         if (!(xDistance==0 && yDistance==0) && (xDistance==0 || yDistance==0)) {    //Rook's movement
             if (xDistance!=0) {
                 if (xDistance>0) {
-                    for (int i = initial.getX();i<initial.getX()+xDistance;i++) {
-                        if (board.getPosition(i,initial.getY()).getCurrentPiece()!=null){
+                    for (int i = 1;i<xDistance;i++) {
+                        if (board.getPosition(initial.getY(),initial.getX()+i).getCurrentPiece()!=null){
                             return false;
+                            
                         }
                     }
                 } else { //xDistance < 0
-                    for (int i = initial.getX();i>initial.getX()+xDistance;i--) {
-                        if (board.getPosition(i,initial.getY()).getCurrentPiece()!=null){
+                    for (int i = -1;i>xDistance;i--) {
+                        if (board.getPosition(initial.getY(),initial.getX()+i).getCurrentPiece()!=null){
                             return false;
                         }
                     }
@@ -66,14 +67,16 @@ public class Queen extends Piece{
             } else { //yDistance != 0
                     
                 if (yDistance>0) {
-                    for (int i = initial.getY();i<initial.getY()+yDistance;i++) {
-                        if (board.getPosition(initial.getX(),i).getCurrentPiece()!=null){
+
+                    for (int i = 1;i<yDistance;i++) {
+                        if (board.getPosition(initial.getY()+i,initial.getX()).getCurrentPiece()!=null){
                             return false;
                         }
                     }
+
                 } else { //yDistance < 0
-                    for (int i = initial.getY();i>initial.getY()+yDistance;i--) {
-                        if (board.getPosition(initial.getX(),i).getCurrentPiece()!=null){
+                    for (int i = -1;i>yDistance;i--) {
+                        if (board.getPosition(initial.getY()+i,initial.getX()).getCurrentPiece()!=null){
                             return false;
                         }
                     }
