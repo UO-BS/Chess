@@ -2,8 +2,8 @@ import java.lang.Math;
 public class Pawn extends Piece{
     
 
-    public Pawn(Player player) {
-        super(player);
+    public Pawn(Player player, Position position) {
+        super(player, position);
     }
 
     public boolean canMove(Board board, Position initial, Position end) {

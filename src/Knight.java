@@ -1,8 +1,8 @@
 import java.lang.Math;
 public class Knight extends Piece{
 
-    public Knight(Player player) {
-        super(player);
+    public Knight(Player player, Position position) {
+        super(player, position);
     }
 
     public boolean canMove(Board board, Position initial, Position end) {

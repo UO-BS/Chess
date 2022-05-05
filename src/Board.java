@@ -77,4 +77,10 @@ public class Board {
         fullBoard[rowNumber][columnNumber].setCurrentPiece(newPiece);
     }
 
+    public void setPiece(Piece newPiece, Position position) {
+        int columnNumber = position.getX();
+        int rowNumber = position.getY();
+        fullBoard[rowNumber][columnNumber].setCurrentPiece(newPiece);
+    }
+
 }

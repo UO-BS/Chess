@@ -3,11 +3,21 @@ public abstract class Piece {
     private Player owner;
     private boolean inPlay;
     private boolean hasMoved;
+    private Position currentPosition;
 
-    public Piece(Player player) {
+    public Piece(Player player, Position position) {
         owner = player;
         inPlay = true;
         hasMoved=false;
+        currentPosition = position;
+    }
+
+    public Position getPosition() {
+        return currentPosition;
+    }
+
+    public void setPosition(Position position) {
+        currentPosition = position;
     }
 
     public Player getOwner() {

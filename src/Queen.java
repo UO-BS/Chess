@@ -1,8 +1,8 @@
 import java.lang.Math;
 public class Queen extends Piece{
 
-    public Queen(Player player) {
-        super(player);
+    public Queen(Player player, Position position) {
+        super(player, position);
     }
 
     public boolean canMove(Board board,Position initial, Position end) {

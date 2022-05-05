@@ -1,8 +1,8 @@
 import java.lang.Math;
 public class Bishop extends Piece{
 
-    public Bishop(Player player) {
-        super(player);
+    public Bishop(Player player, Position position) {
+        super(player, position);
     }
     
     public boolean canMove(Board board,Position initial, Position end) {

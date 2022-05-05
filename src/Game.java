@@ -18,17 +18,31 @@ public class Game {
         
         for (int p=0;p<playerList.length ;p++) {    //This is standard board generation
             for (int i=0;i<8;i++) {
-                Pawn newPawn = new Pawn(playerList[p]);
-                board.setPiece(newPawn, ((8+ 2*playerList[p].getOrientation()) %9), i); //in this formula: 2* is the position of the row for the white pieces
+                Position pawnPosition = new Position(((8+ 2*playerList[p].getOrientation()) %9), i);
+                Pawn newPawn = new Pawn(playerList[p],pawnPosition);
+                board.setPiece(newPawn, pawnPosition); //in this formula: 2* is the position of the row for the white pieces
             }
-            board.setPiece(new King(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 3);
-            board.setPiece(new Queen(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 4);
-            board.setPiece(new Bishop(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 5);
-            board.setPiece(new Bishop(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 2);
-            board.setPiece(new Knight(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 1);
-            board.setPiece(new Knight(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 6);
-            board.setPiece(new Rook(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 0);
-            board.setPiece(new Rook(playerList[p]), ((8+ 1*playerList[p].getOrientation()) %9), 7);
+
+            Position kingPosition = new Position(((8+ 1*playerList[p].getOrientation()) %9),3);
+            board.setPiece(new King(playerList[p],kingPosition), kingPosition);
+            
+            Position queenPosition = new Position(((8+ 1*playerList[p].getOrientation()) %9), 4);
+            board.setPiece(new Queen(playerList[p],queenPosition), queenPosition);
+            
+            Position bishopPosition1 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 5);
+            Position bishopPosition2 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 2);
+            board.setPiece(new Bishop(playerList[p],bishopPosition1), bishopPosition1);
+            board.setPiece(new Bishop(playerList[p],bishopPosition2), bishopPosition2);
+            
+            Position knightPosition1 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 1);
+            Position knightPosition2 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 6);
+            board.setPiece(new Knight(playerList[p],knightPosition1),knightPosition1 );
+            board.setPiece(new Knight(playerList[p],knightPosition2),knightPosition2 );
+            
+            Position rookPosition1 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 0);
+            Position rookPosition2 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 7);
+            board.setPiece(new Rook(playerList[p],rookPosition1),rookPosition1 );
+            board.setPiece(new Rook(playerList[p],rookPosition2),rookPosition2 );
 
         }
 
