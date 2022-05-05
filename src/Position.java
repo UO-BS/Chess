@@ -4,7 +4,7 @@ public class Position{
     private int yPos;
     private Piece currentPiece;
 
-    public Position(int x, int y){
+    public Position(int y, int x){ //NOTE: y comes first since we are using the array[row][column] convention
         xPos = x;
         yPos = y;
     }
