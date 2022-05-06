@@ -133,7 +133,6 @@ public class Game {
         if (endPiece!=null) endPiece.setState(false);
 
         if (this.inCheck(currentTurn)) { 
-            System.out.print(testMove);
             startPiece.setPosition(testMove.getStartPosition());
             board.setPiece(startPiece, testMove.getStartPosition());
             board.setPiece(endPiece, testMove.getEndPosition());
@@ -154,10 +153,6 @@ public class Game {
         Move newMove = new Move(new Position(-1, -1),new Position(-1, -1));
         ArrayList<Move> moveOptions = this.allValidMoves(currentTurn, this.allPossibleMoves(currentTurn));
         boolean checked = false; //Variable so that we do not have to look for check more than once per turn
-        
-        for (int i=0;i<moveOptions.size();i++){
-            System.out.print(moveOptions.get(i)+" ");
-        }
 
         if (this.inCheck(currentTurn)){
             System.out.println(currentTurn.getName()+" is in check...");
@@ -197,8 +192,6 @@ public class Game {
                 for (int j=0;j<possibleDangers.size();j++){
                     if (possibleDangers.get(j).getEndPosition().getCurrentPiece()!=null) {
                         if (possibleDangers.get(j).getEndPosition().getCurrentPiece().equals(checkedKing)) {
-                            System.out.println(possibleDangers.get(j)+"CHECK!"); //----------------------------------------
-                            System.out.println(board.getPosition(7, 3).getCurrentPiece());
                             return true;
                         }
                     }
