@@ -83,12 +83,14 @@ public class Board {
 
     public void setPiece(Piece newPiece, int rowNumber, int columnNumber) {
         fullBoard[rowNumber][columnNumber].setCurrentPiece(newPiece);
+        this.getPosition(rowNumber, columnNumber).setCurrentPiece(newPiece);
     }
 
     public void setPiece(Piece newPiece, Position position) {
         int columnNumber = position.getX();
         int rowNumber = position.getY();
         fullBoard[rowNumber][columnNumber].setCurrentPiece(newPiece);
+        position.setCurrentPiece(newPiece);
     }
 
 }

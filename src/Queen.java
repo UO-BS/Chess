@@ -8,7 +8,7 @@ public class Queen extends Piece{
     public boolean canMove(Board board, Move newMove) {
         Position initial = newMove.getStartPosition();
         Position end = newMove.getEndPosition();
-        
+
         int xDistance = initial.getXDistance(end);
         int yDistance = initial.getYDistance(end);
 
@@ -24,8 +24,6 @@ public class Queen extends Piece{
             if (xDistance >0 && yDistance <0) {//Positive x, Negative y direction
                 for (int i=1;i<Math.abs(yDistance);i++) {
                     if (board.getPosition(initial.getY()-i,initial.getX()+i).getCurrentPiece()!=null){ 
-                        System.out.println(initial.getY());
-                        System.out.println(initial.getX());
                         return false;
                     }
                 }

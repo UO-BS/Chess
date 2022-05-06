@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 public abstract class Piece {
     
     private Player owner;
@@ -42,7 +43,7 @@ public abstract class Piece {
 
     public ArrayList<Move> getPossibleMoves(Board board){
         ArrayList<Move> possibleMoves = new ArrayList();
-        for (int i=0;i<board.getRows;i++) {
+        for (int i=0;i<board.getRows();i++) {
             for (int j=0;j<board.getColumns();j++) {
                 Move testMove = new Move(currentPosition,board.getPosition(i, j));
                 if (this.canMove(board, testMove)) {
@@ -50,7 +51,15 @@ public abstract class Piece {
                 }
             }
         }
+        
         return possibleMoves;
+    }
+
+    public boolean equals(Piece other) {
+        if (this.owner==other.getOwner() && this.currentPosition.equalsXY(other.getPosition())){
+            return true;
+        }
+        return false;
     }
 
     public abstract boolean canMove(Board board, Move newMove);

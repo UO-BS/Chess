@@ -5,6 +5,7 @@ public class Game {
     private Player[] playerList;
     private Player currentTurn;
     private boolean gameOver;
+    private Piece[] kingList;
 
     public Game(Player[] playerList,int boardHeight,int boardWidth) { //constructor for custom games
         this.playerList = playerList;
@@ -14,51 +15,62 @@ public class Game {
 
     public Game(Player[] playerList) {
         this.playerList = playerList;
+        this.kingList = new Piece[2];
         board = new Board(8,8);
         gameOver = false;
         
         for (int p=0;p<playerList.length ;p++) {    //This is standard board generation
             for (int i=0;i<8;i++) {
                 Position pawnPosition = new Position(((8+ 2*playerList[p].getOrientation()) %9), i);
-                Piece pawnPiece = new Pawn(playerList[p],pawnPosition);
-                board.setPiece(pawnPiece, pawnPosition); 
+                Piece pawnPiece = new Pawn(playerList[p],null);
+                board.setPiece(pawnPiece, pawnPosition);
+                pawnPiece.setPosition(pawnPosition);
                 playerList[p].addPiece(pawnPiece);
             }
 
             Position kingPosition = new Position(((8+ 1*playerList[p].getOrientation()) %9),3);
-            Piece kingPiece = new King(playerList[p],kingPosition);
+            Piece kingPiece = new King(playerList[p],null);
             board.setPiece(kingPiece, kingPosition);
+            kingPiece.setPosition(kingPosition);
             playerList[p].addPiece(kingPiece);
+            kingList[p] = kingPiece;
             
             Position queenPosition = new Position(((8+ 1*playerList[p].getOrientation()) %9), 4);
-            Piece queenPiece = new Queen(playerList[p],queenPosition);
+            Piece queenPiece = new Queen(playerList[p],null);
             board.setPiece(queenPiece, queenPosition);
+            queenPiece.setPosition(queenPosition);
             playerList[p].addPiece(queenPiece);
             
             Position bishopPosition1 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 5);
             Position bishopPosition2 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 2);
-            Piece bishopPiece1 = new Bishop(playerList[p],bishopPosition1);
-            Piece bishopPiece2 = new Bishop(playerList[p],bishopPosition2);
+            Piece bishopPiece1 = new Bishop(playerList[p],null);
+            Piece bishopPiece2 = new Bishop(playerList[p],null);
             board.setPiece(bishopPiece1, bishopPosition1);
             board.setPiece(bishopPiece2, bishopPosition2);
+            bishopPiece1.setPosition(bishopPosition1);
+            bishopPiece2.setPosition(bishopPosition2);
             playerList[p].addPiece(bishopPiece1);
             playerList[p].addPiece(bishopPiece2);
             
             Position knightPosition1 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 1);
             Position knightPosition2 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 6);
-            Piece knightPiece1 = new Knight(playerList[p],knightPosition1);
-            Piece knightPiece2 = new Knight(playerList[p],knightPosition2);
+            Piece knightPiece1 = new Knight(playerList[p],null);
+            Piece knightPiece2 = new Knight(playerList[p],null);
             board.setPiece(knightPiece1,knightPosition1 );
             board.setPiece(knightPiece2,knightPosition2 );
+            knightPiece1.setPosition(knightPosition1);
+            knightPiece2.setPosition(knightPosition2);
             playerList[p].addPiece(knightPiece1);
             playerList[p].addPiece(knightPiece2);
             
             Position rookPosition1 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 0);
             Position rookPosition2 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 7);
-            Piece rookPiece1 = new Rook(playerList[p],rookPosition1);
-            Piece rookPiece2 = new Rook(playerList[p],rookPosition2);
+            Piece rookPiece1 = new Rook(playerList[p],null);
+            Piece rookPiece2 = new Rook(playerList[p],null);
             board.setPiece(rookPiece1,rookPosition1 );
             board.setPiece(rookPiece2,rookPosition2 );
+            rookPiece1.setPosition(rookPosition1);
+            rookPiece2.setPosition(rookPosition2);
             playerList[p].addPiece(rookPiece1);
             playerList[p].addPiece(rookPiece2);
 
@@ -87,8 +99,11 @@ public class Game {
         return false; //temporary placeholder statement
     }
 
-    private void movePiece(Position initial, Position end) {
-        initial.getCurrentPiece().setHasMoved(true); //May have to change this?
+    private void movePiece(Move move) {
+        Position initial = move.getStartPosition();
+        Position end = move.getEndPosition();
+        
+        initial.getCurrentPiece().setHasMoved(true); 
         if (end.getCurrentPiece()!=null) {
             System.out.println(end.getCurrentPiece()+" has been removed"); //Later this will be added to a score system
             end.getCurrentPiece().setState(false);
@@ -109,7 +124,7 @@ public class Game {
         initial.setCurrentPiece(null);
         end.setCurrentPiece(initial.getCurrentPiece());
 
-        if (this.inCheck()) { //this function has not been made yet
+        if (this.inCheck(currentTurn)) { //this function has not been made yet
             startPiece.setPosition(initial);
             initial.setCurrentPiece(startPiece);
             end.setCurrentPiece(endPiece);
@@ -125,19 +140,40 @@ public class Game {
 
     private void doTurn() {
         //To be added: Stalemate checking
-        Position start = new Position(-1,-1);
-        Position end = new Position(-1,-1);
+        Move newMove = new Move(new Position(-1, -1),new Position(-1, -1));
+        ArrayList<Move> moveOptions = this.allValidMoves(currentTurn, this.allPossibleMoves(currentTurn));
 
         do {
-            start = this.getStartMove();
-            end = this.getEndMove();
-        } while (!this.isValidMove(start,end));
-        movePiece(start,end);
+            newMove.setStartPosition(this.getStartMove());
+            newMove.setEndPosition(this.getEndMove());
+        } while (!this.isValidMove(newMove,moveOptions));
+        movePiece(newMove);
+    }
+
+    private boolean inCheck(Player checkedPlayer){
+        Piece checkedKing = null;
+        for (int i=0;i<kingList.length;i++) {
+            if (kingList[i].getOwner()==checkedPlayer) {
+                checkedKing = kingList[i];
+            }
+        }
+        
+        for (int i =0;i<playerList.length;i++) {
+            if (playerList[i]!=checkedPlayer) {
+                ArrayList<Move> possibleDangers = this.allPossibleMoves(playerList[i]);
+                for (int j=0;j<possibleDangers.size();j++){
+                    if (possibleDangers.get(j).getEndPosition().getCurrentPiece() == checkedKing) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private ArrayList<Move> allPossibleMoves(Player player){
         ArrayList<Move> fullList = new ArrayList<>();
-        for (int i=0;i<player.getPieceList().length;i++) {
+        for (int i=0;i<player.getPieceList().size();i++) {
             fullList.addAll(player.getPieceList().get(i).getPossibleMoves(board));
         }
         return fullList;
@@ -146,7 +182,7 @@ public class Game {
     private ArrayList<Move> allValidMoves(Player player, ArrayList<Move> possibleMoves){
         ArrayList<Move> fullValidList = new ArrayList<>();
         
-        for (int i=0;i<possibleMoves.length;i++) {
+        for (int i=0;i<possibleMoves.size();i++) {
             
             if (possibleMoves.get(i).getEndPosition().getCurrentPiece()!=null) {    
                 if (player != possibleMoves.get(i).getEndPosition().getCurrentPiece().getOwner()) {
@@ -165,29 +201,13 @@ public class Game {
         return fullValidList;
     }
 
-    private boolean isValidMove(Move move) {
-        //This method will be removed soon
-        if (startPosition.getCurrentPiece()==null) { 
-            System.out.println("No piece to move");
-            return false;
-        } else {
-            if (currentTurn!=startPosition.getCurrentPiece().getOwner()) {
-                System.out.println("You cannot move this piece");
-                return false;
-            }
-            if (!startPosition.getCurrentPiece().canMove(board, move)) {
-                System.out.println("This piece cannot move to that position");
-                return false;
+    private boolean isValidMove(Move move,ArrayList<Move> validMoves) {
+        for (int i=0;i<validMoves.size();i++) {
+            if (move.equals(validMoves.get(i))) {
+                return true;
             }
         }
-        
-        if (endPosition.getCurrentPiece()!=null) { //Validating end position
-            if (currentTurn==endPosition.getCurrentPiece().getOwner()){
-                System.out.println("Position is occupied");
-                return false;
-            }
-        }
-        return true;
+        return false;
     }
 
     private Position getStartMove() {

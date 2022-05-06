@@ -42,9 +42,27 @@ public class Position{
     }
 
     public String toString() {
-        Char yChar = (Character.toString((char) yPos+65 )+"  |");
-        Char xChar = Char.valueOf(xPos);
-        return new String(new Char[]{yChar,xChar});
+        char xChar = ((char) (xPos+65));
+        char yChar = Character.forDigit(yPos+1, 10);
+        return new String(new char[] {xChar,yChar});
+    }
+
+    public boolean equalsXY(Position other) {
+        if (this.xPos==other.getX() && this.yPos==other.getY()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean equals(Position other) {
+        if (this.xPos==other.getX() && this.yPos==other.getY()) {
+            if (this.currentPiece==null && other.getCurrentPiece()==null) {
+                return true;
+            } else if (this.currentPiece.equals(other.getCurrentPiece())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

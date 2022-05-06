@@ -11,8 +11,6 @@ public class Bishop extends Piece{
 
         int xDistance = initial.getXDistance(end);
         int yDistance = initial.getYDistance(end);
-        System.out.println(xDistance);
-        System.out.println(yDistance);
 
         if ((Math.abs(yDistance) != Math.abs(xDistance)) || (yDistance==0)) {
             return false;
@@ -28,8 +26,6 @@ public class Bishop extends Piece{
         if (xDistance >0 && yDistance <0) {//Positive x, Negative y direction
             for (int i=1;i<Math.abs(yDistance);i++) {
                 if (board.getPosition(initial.getY()-i,initial.getX()+i).getCurrentPiece()!=null){ 
-                    System.out.println(initial.getY());
-                    System.out.println(initial.getX());
                     return false;
                 }
             }
