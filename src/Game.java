@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 public class Game {
     
     private Board board;
@@ -95,7 +96,31 @@ public class Game {
         initial.getCurrentPiece().setPosition(end);
         end.setCurrentPiece(initial.getCurrentPiece());
         initial.setCurrentPiece(null);
-        //To be added: adding move to a move history
+        //To be added: removing from player's piece list
+    }
+
+    private boolean testMoveCheck(Move testMove) { //This method tests if making a move would put the current player in check
+        Position initial = testMove.getStartPosition();
+        Position end = testMove.getEndPosition();
+        Piece startPiece = initial.getCurrentPiece();
+        Piece endPiece = end.getCurrentPiece();
+
+        startPiece.setPosition(end);
+        initial.setCurrentPiece(null);
+        end.setCurrentPiece(initial.getCurrentPiece());
+
+        if (this.inCheck()) { //this function has not been made yet
+            startPiece.setPosition(initial);
+            initial.setCurrentPiece(startPiece);
+            end.setCurrentPiece(endPiece);
+            return false;
+        } else {
+            startPiece.setPosition(initial);
+            initial.setCurrentPiece(startPiece);
+            end.setCurrentPiece(endPiece);
+            return true;
+        }
+        
     }
 
     private void doTurn() {
@@ -110,9 +135,39 @@ public class Game {
         movePiece(start,end);
     }
 
-    private boolean isValidMove(Position startPosition,Position endPosition) {
-        //To be added: check if the player is in check
-        if (startPosition.getCurrentPiece()==null) { //validating start position
+    private ArrayList<Move> allPossibleMoves(Player player){
+        ArrayList<Move> fullList = new ArrayList<>();
+        for (int i=0;i<player.getPieceList().length;i++) {
+            fullList.addAll(player.getPieceList().get(i).getPossibleMoves(board));
+        }
+        return fullList;
+    }
+
+    private ArrayList<Move> allValidMoves(Player player, ArrayList<Move> possibleMoves){
+        ArrayList<Move> fullValidList = new ArrayList<>();
+        
+        for (int i=0;i<possibleMoves.length;i++) {
+            
+            if (possibleMoves.get(i).getEndPosition().getCurrentPiece()!=null) {    
+                if (player != possibleMoves.get(i).getEndPosition().getCurrentPiece().getOwner()) {
+                    if (testMoveCheck(possibleMoves.get(i))) { //Looking for "check" is costly, I put it in a new if{} so that it isnt called unless necessary
+                        fullValidList.add(possibleMoves.get(i));
+                    }
+                }
+            } else {
+                if (testMoveCheck(possibleMoves.get(i))) {
+                    fullValidList.add(possibleMoves.get(i));
+                }
+            }
+
+        }
+        
+        return fullValidList;
+    }
+
+    private boolean isValidMove(Move move) {
+        //This method will be removed soon
+        if (startPosition.getCurrentPiece()==null) { 
             System.out.println("No piece to move");
             return false;
         } else {
@@ -120,7 +175,7 @@ public class Game {
                 System.out.println("You cannot move this piece");
                 return false;
             }
-            if (!startPosition.getCurrentPiece().canMove(board, startPosition, endPosition)) {
+            if (!startPosition.getCurrentPiece().canMove(board, move)) {
                 System.out.println("This piece cannot move to that position");
                 return false;
             }

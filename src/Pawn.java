@@ -6,7 +6,10 @@ public class Pawn extends Piece{
         super(player, position);
     }
 
-    public boolean canMove(Board board, Position initial, Position end) {
+    public boolean canMove(Board board, Move newMove) {
+        Position initial = newMove.getStartPosition();
+        Position end = newMove.getEndPosition();
+        
         if (!this.getHasMoved()
                 && initial.getYDistance(end)==2*this.getOwner().getOrientation() 
                 && initial.getXDistance(end)==0) {

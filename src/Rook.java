@@ -4,8 +4,12 @@ public class Rook extends Piece{
         super(player, position);
     }
 
-    public boolean canMove(Board board,Position initial, Position end) {
+    public boolean canMove(Board board, Move newMove) {
+        Position initial = newMove.getStartPosition();
+        Position end = newMove.getEndPosition();
+        
         //To be added: Castling once player move history is added
+        
         int xDistance = initial.getXDistance(end);
         int yDistance = initial.getYDistance(end);
 

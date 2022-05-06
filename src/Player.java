@@ -32,5 +32,9 @@ public class Player{
     public void removePiece(Piece e) {
         playablePieces.remove(e);
     }
+
+    public ArrayList<Piece> getPieceList(){
+        return playablePieces;
+    }
     
 }

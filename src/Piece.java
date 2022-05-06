@@ -40,6 +40,19 @@ public abstract class Piece {
         return this.hasMoved;
     }
 
-    public abstract boolean canMove(Board board, Position initial, Position end);
+    public ArrayList<Move> getPossibleMoves(Board board){
+        ArrayList<Move> possibleMoves = new ArrayList();
+        for (int i=0;i<board.getRows;i++) {
+            for (int j=0;j<board.getColumns();j++) {
+                Move testMove = new Move(currentPosition,board.getPosition(i, j));
+                if (this.canMove(board, testMove)) {
+                    possibleMoves.add(testMove);
+                }
+            }
+        }
+        return possibleMoves;
+    }
+
+    public abstract boolean canMove(Board board, Move newMove);
 
 }

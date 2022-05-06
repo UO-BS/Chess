@@ -4,6 +4,14 @@ public class Board {
     private int totalRow; //columnNumber
     private int totalColumn; //rowNumber
 
+    public int getRows(){
+        return totalRow;
+    }
+
+    public int getColumns(){
+        return totalColumn;
+    }
+
     public Board(int rows, int columns) {
         this.totalRow = rows;
         this.totalColumn = columns;
