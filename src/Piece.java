@@ -43,11 +43,13 @@ public abstract class Piece {
 
     public ArrayList<Move> getPossibleMoves(Board board){
         ArrayList<Move> possibleMoves = new ArrayList();
-        for (int i=0;i<board.getRows();i++) {
-            for (int j=0;j<board.getColumns();j++) {
-                Move testMove = new Move(currentPosition,board.getPosition(i, j));
-                if (this.canMove(board, testMove)) {
-                    possibleMoves.add(testMove);
+        if (inPlay) { //Cannot have any moves if the piece has been removed
+            for (int i=0;i<board.getRows();i++) {
+                for (int j=0;j<board.getColumns();j++) {
+                    Move testMove = new Move(currentPosition,board.getPosition(i, j));
+                    if (this.canMove(board, testMove)) {
+                        possibleMoves.add(testMove);
+                    }
                 }
             }
         }
@@ -56,7 +58,10 @@ public abstract class Piece {
     }
 
     public boolean equals(Piece other) {
-        if (this.owner==other.getOwner() && this.currentPosition.equalsXY(other.getPosition())){
+        if (other == null) {
+            return false;
+        }
+        if (this.owner==other.getOwner() && this.currentPosition.equalsXY(other.getPosition()) && this.inPlay==other.getState()){
             return true;
         }
         return false;

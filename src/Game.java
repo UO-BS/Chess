@@ -83,20 +83,30 @@ public class Game {
         while (!gameOver) {
             for (int i = 0;i<playerList.length;i++) {
                 currentTurn = playerList[i];
-                System.out.println(currentTurn.getName()+"'s turn");
-                board.display();
-                doTurn();
                 if (checkWin()){
                     return currentTurn;
                 }
+                System.out.println(currentTurn.getName()+"'s turn");
+                board.display();
+                doTurn();
+                
             }
             
         }
         return playerList[0];
     }
 
-    private boolean checkWin() {
-        return false; //temporary placeholder statement
+    private boolean checkWin(){
+        int counter = 0;
+        for (int i=0;i<playerList.length;i++) { //Counts the number of players left in the game
+            if (!playerList[i].getCheckmated()) {
+                counter++;
+            }
+        }
+        if (counter!=1) {
+            return false;
+        }
+        return true;
     }
 
     private void movePiece(Move move) {
@@ -111,28 +121,29 @@ public class Game {
         initial.getCurrentPiece().setPosition(end);
         end.setCurrentPiece(initial.getCurrentPiece());
         initial.setCurrentPiece(null);
-        //To be added: removing from player's piece list
     }
 
     private boolean testMoveCheck(Move testMove) { //This method tests if making a move would put the current player in check
-        Position initial = testMove.getStartPosition();
-        Position end = testMove.getEndPosition();
-        Piece startPiece = initial.getCurrentPiece();
-        Piece endPiece = end.getCurrentPiece();
+        Piece startPiece = testMove.getStartPosition().getCurrentPiece();
+        Piece endPiece = testMove.getEndPosition().getCurrentPiece();
+        
+        startPiece.setPosition(testMove.getEndPosition());
+        board.setPiece(null, testMove.getStartPosition());
+        board.setPiece(startPiece, testMove.getEndPosition());
+        if (endPiece!=null) endPiece.setState(false);
 
-        startPiece.setPosition(end);
-        initial.setCurrentPiece(null);
-        end.setCurrentPiece(initial.getCurrentPiece());
-
-        if (this.inCheck(currentTurn)) { //this function has not been made yet
-            startPiece.setPosition(initial);
-            initial.setCurrentPiece(startPiece);
-            end.setCurrentPiece(endPiece);
+        if (this.inCheck(currentTurn)) { 
+            System.out.print(testMove);
+            startPiece.setPosition(testMove.getStartPosition());
+            board.setPiece(startPiece, testMove.getStartPosition());
+            board.setPiece(endPiece, testMove.getEndPosition());
+            if (endPiece!=null) endPiece.setState(true);
             return false;
         } else {
-            startPiece.setPosition(initial);
-            initial.setCurrentPiece(startPiece);
-            end.setCurrentPiece(endPiece);
+            startPiece.setPosition(testMove.getStartPosition());
+            board.setPiece(startPiece, testMove.getStartPosition());
+            board.setPiece(endPiece, testMove.getEndPosition());
+            if (endPiece!=null) endPiece.setState(true);
             return true;
         }
         
@@ -142,12 +153,33 @@ public class Game {
         //To be added: Stalemate checking
         Move newMove = new Move(new Position(-1, -1),new Position(-1, -1));
         ArrayList<Move> moveOptions = this.allValidMoves(currentTurn, this.allPossibleMoves(currentTurn));
+        boolean checked = false; //Variable so that we do not have to look for check more than once per turn
+        
+        for (int i=0;i<moveOptions.size();i++){
+            System.out.print(moveOptions.get(i)+" ");
+        }
 
-        do {
-            newMove.setStartPosition(this.getStartMove());
-            newMove.setEndPosition(this.getEndMove());
-        } while (!this.isValidMove(newMove,moveOptions));
-        movePiece(newMove);
+        if (this.inCheck(currentTurn)){
+            System.out.println(currentTurn.getName()+" is in check...");
+            checked = true;
+        }
+
+        if (moveOptions.size()==0) {
+            if (checked) {
+                System.out.println(currentTurn.getName()+" has been checkmated!");
+                currentTurn.setCheckmated(true);
+            } else {
+                System.out.println(currentTurn.getName()+" has been stalemated!");
+                currentTurn.setCheckmated(true);
+            }
+            
+        } else {
+            do {
+                newMove.setStartPosition(this.getStartMove());
+                newMove.setEndPosition(this.getEndMove());
+            } while (!this.isValidMove(newMove,moveOptions));
+            movePiece(newMove);
+        }
     }
 
     private boolean inCheck(Player checkedPlayer){
@@ -157,13 +189,18 @@ public class Game {
                 checkedKing = kingList[i];
             }
         }
+
         
         for (int i =0;i<playerList.length;i++) {
             if (playerList[i]!=checkedPlayer) {
                 ArrayList<Move> possibleDangers = this.allPossibleMoves(playerList[i]);
                 for (int j=0;j<possibleDangers.size();j++){
-                    if (possibleDangers.get(j).getEndPosition().getCurrentPiece() == checkedKing) {
-                        return true;
+                    if (possibleDangers.get(j).getEndPosition().getCurrentPiece()!=null) {
+                        if (possibleDangers.get(j).getEndPosition().getCurrentPiece().equals(checkedKing)) {
+                            System.out.println(possibleDangers.get(j)+"CHECK!"); //----------------------------------------
+                            System.out.println(board.getPosition(7, 3).getCurrentPiece());
+                            return true;
+                        }
                     }
                 }
             }
