@@ -26,12 +26,12 @@ public class Game {
 
         for (int p=0;p<playerList.length ;p++) {
             System.out.println("Placing "+playerList[p].getName()+"'s pieces");
-            String[] validPieces = new String[]{"Pawn","King","Queen","Bishop","Knight","Rook","Done"};
+            String[] validOptions = new String[]{"Pawn","King","Queen","Bishop","Knight","Rook","Done"};
             String userChoice="";
 
             while (!userChoice.equals("Done")) {
                 UserInterface.displayASCII(board);
-                userChoice = UserInterface.getStringInput("What type of piece would you like to place? (Write Done when you want to go to the next player)", validPieces);
+                userChoice = UserInterface.getStringInput("What type of piece would you like to place? (Write Done when you want to go to the next player)", validOptions);
                 switch(userChoice) {
                     case "Pawn":
                         Position pawnPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
@@ -41,12 +41,16 @@ public class Game {
                         playerList[p].addPiece(pawnPiece);
                         break;
                     case "King":
-                        Position kingPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
-                        Piece kingPiece = new King(playerList[p],null);
-                        board.setPiece(kingPiece, kingPosition);
-                        kingPiece.setPosition(kingPosition);
-                        playerList[p].addPiece(kingPiece);
-                        kingList[p] = kingPiece;
+                        if (kingList[p]==null) {
+                            Position kingPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
+                            Piece kingPiece = new King(playerList[p],null);
+                            board.setPiece(kingPiece, kingPosition);
+                            kingPiece.setPosition(kingPosition);
+                            playerList[p].addPiece(kingPiece);
+                            kingList[p] = kingPiece;
+                        } else {
+                            System.out.println("There is already a king for this player");
+                        }
                         break;
                     case "Queen":
                         Position queenPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
@@ -75,6 +79,12 @@ public class Game {
                         board.setPiece(rookPiece,rookPosition);
                         rookPiece.setPosition(rookPosition);
                         playerList[p].addPiece(rookPiece);
+                        break;
+                    case "Done":
+                        if (kingList[p]==null) {
+                            System.out.println("No King is in play for this player");
+                            userChoice="";
+                        }
                         break;
                 }
             }
@@ -218,6 +228,43 @@ public class Game {
         end.setCurrentPiece(initial.getCurrentPiece());
         end.getCurrentPiece().setPosition(end);
         initial.setCurrentPiece(null);
+        
+        if (move.getSpecial()!=null) {
+            System.out.println("pawnpromote2");
+            switch (move.getSpecial()) {
+                case "PawnPromotion":
+                    String[] validPieces = new String[]{"Pawn","King","Queen","Bishop","Knight","Rook"};
+                    String pieceChoice = UserInterface.getStringInput("Pawn is being promoted to what piece?", validPieces);
+                    switch (pieceChoice) {
+                        case "Queen":
+                            Piece queenPiece = new Queen(end.getCurrentPiece().getOwner(),end);   
+                            end.getCurrentPiece().getOwner().addPiece(queenPiece);
+                            end.getCurrentPiece().getOwner().removePiece(end.getCurrentPiece());    
+                            board.setPiece(queenPiece, end);
+                            break;
+                        case "Bishop":
+                            Piece bishopPiece = new Bishop(end.getCurrentPiece().getOwner(),end);   
+                            end.getCurrentPiece().getOwner().addPiece(bishopPiece);
+                            end.getCurrentPiece().getOwner().removePiece(end.getCurrentPiece());    
+                            board.setPiece(bishopPiece, end);
+                            break;
+                        case "Knight":
+                            Piece knightPiece = new Queen(end.getCurrentPiece().getOwner(),end);   
+                            end.getCurrentPiece().getOwner().addPiece(knightPiece);
+                            end.getCurrentPiece().getOwner().removePiece(end.getCurrentPiece());    
+                            board.setPiece(knightPiece, end);
+                            break;
+                        case "Rook":
+                            Piece rookPiece = new Queen(end.getCurrentPiece().getOwner(),end);   
+                            end.getCurrentPiece().getOwner().addPiece(rookPiece);
+                            end.getCurrentPiece().getOwner().removePiece(end.getCurrentPiece());    
+                            board.setPiece(rookPiece, end);
+                            break;
+                    }
+                    break;
+            }
+        }
+        
     }
 
     /**
@@ -258,6 +305,7 @@ public class Game {
         Move newMove = new Move(new Position(-1, -1),new Position(-1, -1));
         ArrayList<Move> moveOptions = this.allValidMoves(currentTurn, this.allPossibleMoves(currentTurn));
         boolean checked = false; //Variable so that we do not have to look for check more than once per turn
+        int moveNumber = -1;
 
         if (this.inCheck(currentTurn)){
             System.out.println(currentTurn.getName()+" is in check...");
@@ -277,8 +325,11 @@ public class Game {
             do {
                 newMove.setStartPosition(UserInterface.getPositionFromUser(board, "From what position do you want to move a piece?"));
                 newMove.setEndPosition(UserInterface.getPositionFromUser(board, "Where do you want to move to?"));
-            } while (!this.isValidMove(newMove,moveOptions));
-            movePiece(newMove);
+                moveNumber= this.isValidMove(newMove,moveOptions);
+            } while (moveNumber==-1);
+            
+            movePiece(moveOptions.get(moveNumber));
+            
         }
     }
 
@@ -365,13 +416,13 @@ public class Game {
      * @param validMoves An ArrayList of all valid moves.
      * @return Boolean representing if the passed move is one of the player's validMoves.
      */
-    private boolean isValidMove(Move move,ArrayList<Move> validMoves) {
+    private int isValidMove(Move move,ArrayList<Move> validMoves) {
         for (int i=0;i<validMoves.size();i++) {
-            if (move.equals(validMoves.get(i))) {
-                return true;
+            if (move.equalsStartEnd(validMoves.get(i))) {
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 
 }

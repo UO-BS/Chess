@@ -9,6 +9,7 @@ public class Knight extends Piece{
         super(player, position);
     }
 
+
     public boolean canMove(Board board, Move newMove) {
         Position initial = newMove.getStartPosition();
         Position end = newMove.getEndPosition();

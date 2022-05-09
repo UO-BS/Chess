@@ -6,6 +6,7 @@ public class Move {
 
     private Position start;
     private Position end;
+    private String specialMove; //Includes: enPassant, castling, pawnPromotion
 
     /**
      * Generates a move for a piece.
@@ -16,6 +17,20 @@ public class Move {
     public Move(Position startPosition, Position endPosition){
         start = startPosition;
         end = endPosition;
+    }
+
+    public Move(Position startPosition, Position endPosition, String specialIdentifier){
+        start = startPosition;
+        end = endPosition;
+        specialMove = specialIdentifier;
+    }
+
+    public String getSpecial(){
+        return specialMove;
+    }
+
+    public void setSpecial(String specialIdentifier){
+        specialMove = specialIdentifier;
     }
 
     public Position getStartPosition(){
@@ -38,8 +53,15 @@ public class Move {
         return new Move(end,start);
     }
 
-    public boolean equals(Move other){
+    public boolean equalsStartEnd(Move other){
         if (this.start.equals(other.getStartPosition()) && this.end.equals(other.getEndPosition())) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean equals(Move other){
+        if (this.start.equals(other.getStartPosition()) && this.end.equals(other.getEndPosition()) && specialMove==other.getSpecial()) {
             return true;
         }
         return false;

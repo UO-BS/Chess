@@ -1,4 +1,5 @@
 import java.lang.Math;
+import java.util.ArrayList;
 /**
  * Class representing a Pawn chess piece.
  * @author UO-BS
@@ -35,6 +36,39 @@ public class Pawn extends Piece{
             return true;
         }
         return false;
+    }
+
+    /**
+     * Generates an ArrayList containing all possible moves that a piece can make from its current position
+     * <p>
+     * This is an override of the same method in Piece. The only difference here is the check for a "Special" move.
+     * This same change can be achieved in the canMove method by modifying the parameter newMove, 
+     * though it might be considered bad practice to do so as it would be hard to notice this change to the newMove parameter.
+     * </p>
+     * 
+     * @param board A board containing all the Positions
+     * @return An ArrayList containing all possible moves that a piece can piece
+     */
+    public ArrayList<Move> getPossibleMoves(Board board){
+        ArrayList<Move> possibleMoves = new ArrayList();
+        if (this.getState()) { //Cannot have any moves if the piece has been removed
+            for (int i=0;i<board.getRows();i++) {
+                for (int j=0;j<board.getColumns();j++) {
+                    
+                    Move testMove = new Move(this.getPosition(),board.getPosition(i, j));
+                    if (testMove.getEndPosition().getY()==(board.getRows()-1*this.getOwner().getOrientation())%(board.getRows()+1)) {
+                        testMove.setSpecial("PawnPromotion");
+                        System.out.println("pawnpromote1");
+                    }
+
+                    if (this.canMove(board, testMove)) {
+                        possibleMoves.add(testMove);
+                    }
+                }
+            }
+        }
+        
+        return possibleMoves;
     }
 
     public String toString(){
