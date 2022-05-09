@@ -9,7 +9,7 @@ public class Player{
     private String playerName;
     private int orientation;
     private ArrayList<Piece> playablePieces;
-    private boolean checkmated;
+    private int playerState;
 
     /**
      * Generates a player of the game.
@@ -21,7 +21,7 @@ public class Player{
         this.playerName = playerName;
         this.orientation = orientation;
         playablePieces = new ArrayList<Piece>();
-        checkmated =false;
+        playerState =0;
     }
 
     /**
@@ -33,15 +33,15 @@ public class Player{
         this.playerName = playerName;
         this.orientation = 1;
         playablePieces = new ArrayList<Piece>();
-        checkmated= false;
+        playerState =0;
     }
 
-    public void setCheckmated(boolean checkmate){
-        checkmated=checkmate;
+    public void setPlayerState(int checkmate){
+        playerState=checkmate;
     }
 
-    public boolean getCheckmated(){
-        return checkmated;
+    public int getCheckmated(){
+        return playerState;
     }
 
     public String getName(){

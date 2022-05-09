@@ -105,7 +105,16 @@ public class Game {
             for (int i = 0;i<playerList.length;i++) {
                 currentTurn = playerList[i];
                 if (checkWin()){
-                    return currentTurn;
+                    
+                    for (int j=0;j<playerList.length;j++) {
+                        if (playerList[i].getCheckmated()==1) {
+                            return currentTurn;
+                        }
+                        if (playerList[i].getCheckmated()==2) {
+                            return null;
+                        }
+                    }                        
+
                 }
                 System.out.println(currentTurn.getName()+"'s turn");
                 board.display();
@@ -124,8 +133,8 @@ public class Game {
      */
     private boolean checkWin(){
         int counter = 0;
-        for (int i=0;i<playerList.length;i++) { //Counts the number of players left in the game
-            if (!playerList[i].getCheckmated()) {
+        for (int i=0;i<playerList.length;i++) {
+            if (playerList[i].getCheckmated()!=0) {
                 counter++;
             }
         }
@@ -201,10 +210,10 @@ public class Game {
         if (moveOptions.size()==0) {
             if (checked) {
                 System.out.println(currentTurn.getName()+" has been checkmated!");
-                currentTurn.setCheckmated(true);
+                currentTurn.setCheckmated(1);
             } else {
                 System.out.println(currentTurn.getName()+" has been stalemated!");
-                currentTurn.setCheckmated(true);
+                currentTurn.setCheckmated(2);
             }
             
         } else {

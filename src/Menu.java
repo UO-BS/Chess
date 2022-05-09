@@ -22,9 +22,8 @@ public class Menu {
 
             int boardHeight = UserInterface.getIntInput("Enter the height of the board (2-20): ", 2, 20);
             int boardWidth = UserInterface.getIntInput("Enter the width of the board (2-20): ", 2, 20);
-            int playerNum = UserInterface.getIntInput("Enter the number of players (2-4): ", 2, 4);
 
-            Player[] playerList = new Player[playerNum];
+            Player[] playerList = new Player[2];
             for (int i =0; i<playerList.length;i++) {
                 String playerName = UserInterface.getStringInput("What is the name of player "+(i+1)+": ");
                 playerList[i] = new Player(playerName);
@@ -34,7 +33,11 @@ public class Menu {
         }
 
         Player winner = currentGame.runGame();
-        System.out.println(winner.getName()+" Wins!");
+        if (winner == null) {
+            System.out.println("Nobody Wins!");
+        } else {
+            System.out.println(winner.getName()+" Wins!");
+        }
 
     }
 
