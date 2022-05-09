@@ -1,8 +1,18 @@
+/**
+ * Class representing a Move from one Position on the board to another.
+ * @author UO-BS
+ */
 public class Move {
 
     private Position start;
     private Position end;
 
+    /**
+     * Generates a move for a piece.
+     * 
+     * @param startPosition The starting position of the move.
+     * @param endPosition The position where the piece will land after moving.
+     */
     public Move(Position startPosition, Position endPosition){
         start = startPosition;
         end = endPosition;

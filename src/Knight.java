@@ -1,4 +1,8 @@
 import java.lang.Math;
+/**
+ * Class representing a Knight chess piece.
+ * @author UO-BS
+ */
 public class Knight extends Piece{
 
     public Knight(Player player, Position position) {

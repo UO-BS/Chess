@@ -1,9 +1,19 @@
+/**
+ * Class for a position on a chess board
+ * @author UO-BS
+ */
 public class Position{
 
     private int xPos;
     private int yPos;
     private Piece currentPiece;
 
+    /**
+     * Generates a Position on a chess board.
+     * 
+     * @param y The y coordinate of the Position.
+     * @param x The x coordinate of the Position.
+     */
     public Position(int y, int x){ //NOTE: y comes first since we are using the array[row][column] convention
         xPos = x;
         yPos = y;
@@ -17,11 +27,23 @@ public class Position{
         return yPos;
     }
 
-    public int getXDistance(Position other){ //A positive value means going right on the board
+    /**
+     * Determines the x-axis distance between 2 positions
+     * 
+     * @param other The position we are trying to find the distance to.
+     * @return The x-axis distance between this position and other. A positive value represents going right on the board
+     */
+    public int getXDistance(Position other){ 
         return (other.xPos - this.xPos);
     }
 
-    public int getYDistance(Position other){ //A positive value means going up on the board
+    /**
+     * Determines the y-axis distance between 2 positions
+     * 
+     * @param other The position we are trying to find the distance to.
+     * @return The y-axis distance between this position and other. A positive value represents going up on the board
+     */
+    public int getYDistance(Position other){ 
         return (other.yPos - this.yPos);
     }
 

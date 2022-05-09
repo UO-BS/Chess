@@ -1,4 +1,9 @@
 import java.util.ArrayList;
+/**
+ * Class representing a player for a game of chess.
+ * @author UO-BS
+ */
+
 public class Player{
 
     private String playerName;
@@ -6,6 +11,12 @@ public class Player{
     private ArrayList<Piece> playablePieces;
     private boolean checkmated;
 
+    /**
+     * Generates a player of the game.
+     * 
+     * @param playerName The custom name of a player.
+     * @param orientation The direction the player moves. 1 goes up on the board and -1 goes down.
+     */
     public Player(String playerName, int orientation) {
         this.playerName = playerName;
         this.orientation = orientation;
@@ -13,6 +24,11 @@ public class Player{
         checkmated =false;
     }
 
+    /**
+     * Generates a player of the game with default orientation of going up on the board.
+     * 
+     * @param playerName The custom name of a player.
+     */
     public Player(String playerName) {
         this.playerName = playerName;
         this.orientation = 1;

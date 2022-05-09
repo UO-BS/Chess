@@ -1,4 +1,8 @@
 import java.lang.Math;
+/**
+ * Class representing a Queen chess piece.
+ * @author UO-BS
+ */
 public class Queen extends Piece{
 
     public Queen(Player player, Position position) {

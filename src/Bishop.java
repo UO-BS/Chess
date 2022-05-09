@@ -1,9 +1,14 @@
 import java.lang.Math;
+/**
+ * Class representing a Bishop chess piece.
+ * @author UO-BS
+ */
 public class Bishop extends Piece{
 
     public Bishop(Player player, Position position) {
         super(player, position);
     }
+    
     
     public boolean canMove(Board board, Move newMove) {
         Position initial = newMove.getStartPosition();

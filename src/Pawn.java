@@ -1,4 +1,8 @@
 import java.lang.Math;
+/**
+ * Class representing a Pawn chess piece.
+ * @author UO-BS
+ */
 public class Pawn extends Piece{
     
 

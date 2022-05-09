@@ -1,3 +1,7 @@
+/**
+ * Class for the main menu.
+ * @author UO-BS
+ */
 public class Menu {
 
 

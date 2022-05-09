@@ -1,10 +1,15 @@
 import java.lang.Math;
+/**
+ * Class representing a King chess piece.
+ * @author UO-BS
+ */
 public class King extends Piece{
 
     public King(Player player, Position position) {
         super(player, position);
     }
 
+    
     public boolean canMove(Board board, Move newMove) {
         Position initial = newMove.getStartPosition();
         Position end = newMove.getEndPosition();

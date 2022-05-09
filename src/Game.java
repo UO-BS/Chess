@@ -1,4 +1,8 @@
 import java.util.ArrayList;
+/**
+ * Class for a single game of chess.
+ * @author UO-BS
+ */
 public class Game {
     
     private Board board;
@@ -7,12 +11,24 @@ public class Game {
     private boolean gameOver;
     private Piece[] kingList;
 
+    /**
+     * Generates a Custom game of Chess.
+     * 
+     * @param playerList The list containing the opponents in this game of Chess.
+     * @param boardHeight The Height of a custom game board.
+     * @param boardWidth The Width of a custom game board.
+     */
     public Game(Player[] playerList,int boardHeight,int boardWidth) { //constructor for custom games
         this.playerList = playerList;
         board = new Board(boardHeight,boardWidth);
         gameOver = false;
     }
 
+    /**
+     * Generates the standard game of Chess.
+     * 
+     * @param playerList The list containing the 2 opponents in this game of Chess.
+     */
     public Game(Player[] playerList) {
         this.playerList = playerList;
         this.kingList = new Piece[2];
@@ -78,6 +94,11 @@ public class Game {
 
     }
 
+    /**
+     * Calls all the helper methods to run a game of Chess and returns the winning player.
+     * 
+     * @return The player that won the game of chess.
+     */
     public Player runGame() { //returns the winner of the game
         
         while (!gameOver) {
@@ -96,6 +117,11 @@ public class Game {
         return playerList[0];
     }
 
+    /**
+     * Method that checks if there is only 1 player left in the game. 
+     * 
+     * @return Boolean for when the game is over.
+     */
     private boolean checkWin(){
         int counter = 0;
         for (int i=0;i<playerList.length;i++) { //Counts the number of players left in the game
@@ -109,6 +135,11 @@ public class Game {
         return true;
     }
 
+    /**
+     * Moves a piece and cleans up any "dead" pieces created from this move.
+     * 
+     * @param move The move that is being made.
+     */
     private void movePiece(Move move) {
         Position initial = move.getStartPosition();
         Position end = move.getEndPosition();
@@ -118,11 +149,17 @@ public class Game {
             System.out.println(end.getCurrentPiece()+" has been removed"); //Later this will be added to a score system
             end.getCurrentPiece().setState(false);
         }
-        initial.getCurrentPiece().setPosition(end);
         end.setCurrentPiece(initial.getCurrentPiece());
+        end.getCurrentPiece().setPosition(end);
         initial.setCurrentPiece(null);
     }
 
+    /**
+     * Determines if a move would place the current/moving player in check (making it an invalid move).
+     * 
+     * @param testMove The move that is being tested.
+     * @return Boolean representing if the move passed the test. False means that the tested move placed the moving player into check.
+     */
     private boolean testMoveCheck(Move testMove) { //This method tests if making a move would put the current player in check
         Piece startPiece = testMove.getStartPosition().getCurrentPiece();
         Piece endPiece = testMove.getEndPosition().getCurrentPiece();
@@ -148,8 +185,10 @@ public class Game {
         
     }
 
+    /**
+     * Determines wether the current player is in check, checkmate or stalemate, then allows the player to make a move if the game is not over.
+     */
     private void doTurn() {
-        //To be added: Stalemate checking
         Move newMove = new Move(new Position(-1, -1),new Position(-1, -1));
         ArrayList<Move> moveOptions = this.allValidMoves(currentTurn, this.allPossibleMoves(currentTurn));
         boolean checked = false; //Variable so that we do not have to look for check more than once per turn
@@ -177,6 +216,12 @@ public class Game {
         }
     }
 
+    /**
+     * Determines if a player is in check.
+     * 
+     * @param checkedPlayer The player that is being determined.
+     * @return Boolean representing wether the player is in check.
+     */
     private boolean inCheck(Player checkedPlayer){
         Piece checkedKing = null;
         for (int i=0;i<kingList.length;i++) {
@@ -201,6 +246,12 @@ public class Game {
         return false;
     }
 
+    /**
+     * Generates a single ArrayList that contains every possible move that a player's pieces can make.
+     * 
+     * @param player The player that the moves are being generated for
+     * @return ArrayList of every possible move that a player's pieces can make.
+     */
     private ArrayList<Move> allPossibleMoves(Player player){
         ArrayList<Move> fullList = new ArrayList<>();
         for (int i=0;i<player.getPieceList().size();i++) {
@@ -209,6 +260,16 @@ public class Game {
         return fullList;
     }
 
+    /**
+     * Generates a single ArrayList that contains every valid move that a player's pieces can make.
+     * <p>
+     * A valid move cannot end on a piece owned by the same player, and cannot put the moving player in check.
+     * </p>
+     * 
+     * @param player The player that the moves are being generated for
+     * @param possibleMoves An ArrayList of all possible moves that the pieces can make
+     * @return ArrayList of every valid move that a player's pieces can make.
+     */
     private ArrayList<Move> allValidMoves(Player player, ArrayList<Move> possibleMoves){
         ArrayList<Move> fullValidList = new ArrayList<>();
         
@@ -231,6 +292,13 @@ public class Game {
         return fullValidList;
     }
 
+    /**
+     * Tests if a given move is in the list of valid moves.
+     * 
+     * @param move Any move that you want to check.
+     * @param validMoves An ArrayList of all valid moves.
+     * @return Boolean representing if the passed move is one of the player's validMoves.
+     */
     private boolean isValidMove(Move move,ArrayList<Move> validMoves) {
         for (int i=0;i<validMoves.size();i++) {
             if (move.equals(validMoves.get(i))) {
@@ -240,6 +308,11 @@ public class Game {
         return false;
     }
 
+    /**
+     * Gets the start position of a move from the user
+     * 
+     * @return Start position of the user's move
+     */
     private Position getStartMove() {
         String movingPiece ="";
         Position movingPiecePosition;
@@ -262,6 +335,11 @@ public class Game {
         return movingPiecePosition;
     }
 
+    /**
+     * Gets the end position of a move from the user
+     * 
+     * @return End position of the user's move
+     */
     private Position getEndMove() {
         String movedPiece ="";
         Position movedPiecePosition;

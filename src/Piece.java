@@ -1,4 +1,8 @@
 import java.util.ArrayList;
+/**
+ * Class representing a chess piece.
+ * @author UO-BS
+ */
 public abstract class Piece {
     
     private Player owner;
@@ -6,6 +10,12 @@ public abstract class Piece {
     private boolean hasMoved;
     private Position currentPosition;
 
+    /**
+     * Generates a piece in the game.
+     * 
+     * @param player The owner of this piece.
+     * @param position The Position of this piece on the board.
+     */
     public Piece(Player player, Position position) {
         owner = player;
         inPlay = true;
@@ -41,6 +51,12 @@ public abstract class Piece {
         return this.hasMoved;
     }
 
+    /**
+     * Generates an ArrayList containing all possible moves that a piece can make from its current position
+     * 
+     * @param board A board containing all the Positions
+     * @return An ArrayList containing all possible moves that a piece can piece
+     */
     public ArrayList<Move> getPossibleMoves(Board board){
         ArrayList<Move> possibleMoves = new ArrayList();
         if (inPlay) { //Cannot have any moves if the piece has been removed
@@ -67,6 +83,12 @@ public abstract class Piece {
         return false;
     }
 
+    /**
+     * Determines if a piece of a class can make a move
+     * 
+     * @param newMove A move from any Position to another Position
+     * @return Boolean representing if a piece of a class can complete the move
+     */
     public abstract boolean canMove(Board board, Move newMove);
 
 }

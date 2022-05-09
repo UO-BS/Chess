@@ -1,3 +1,7 @@
+/**
+ * Class representing a Rook chess piece.
+ * @author UO-BS
+ */
 public class Rook extends Piece{
 
     public Rook(Player player, Position position) {
