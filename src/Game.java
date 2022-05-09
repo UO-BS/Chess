@@ -20,8 +20,10 @@ public class Game {
      */
     public Game(Player[] playerList,int boardHeight,int boardWidth) { //constructor for custom games
         this.playerList = playerList;
+        this.kingList = new Piece[2];
         board = new Board(boardHeight,boardWidth);
         gameOver = false;
+        
     }
 
     /**
@@ -105,19 +107,18 @@ public class Game {
             for (int i = 0;i<playerList.length;i++) {
                 currentTurn = playerList[i];
                 if (checkWin()){
-                    
                     for (int j=0;j<playerList.length;j++) {
-                        if (playerList[i].getCheckmated()==1) {
+                        if (playerList[j].getPlayerState()==1) {
                             return currentTurn;
                         }
-                        if (playerList[i].getCheckmated()==2) {
+                        if (playerList[j].getPlayerState()==2) {
                             return null;
                         }
                     }                        
 
                 }
                 System.out.println(currentTurn.getName()+"'s turn");
-                board.display();
+                UserInterface.displayASCII(board);
                 doTurn();
                 
             }
@@ -134,7 +135,7 @@ public class Game {
     private boolean checkWin(){
         int counter = 0;
         for (int i=0;i<playerList.length;i++) {
-            if (playerList[i].getCheckmated()!=0) {
+            if (playerList[i].getPlayerState()!=0) {
                 counter++;
             }
         }
@@ -210,16 +211,16 @@ public class Game {
         if (moveOptions.size()==0) {
             if (checked) {
                 System.out.println(currentTurn.getName()+" has been checkmated!");
-                currentTurn.setCheckmated(1);
+                currentTurn.setPlayerState(1);
             } else {
                 System.out.println(currentTurn.getName()+" has been stalemated!");
-                currentTurn.setCheckmated(2);
+                currentTurn.setPlayerState(2);
             }
             
         } else {
             do {
-                newMove.setStartPosition(this.getStartMove());
-                newMove.setEndPosition(this.getEndMove());
+                newMove.setStartPosition(UserInterface.getPositionFromUser(board, "From what position do you want to move a piece?"));
+                newMove.setEndPosition(UserInterface.getPositionFromUser(board, "Where do you want to move to?"));
             } while (!this.isValidMove(newMove,moveOptions));
             movePiece(newMove);
         }
@@ -315,60 +316,6 @@ public class Game {
             }
         }
         return false;
-    }
-
-    /**
-     * Gets the start position of a move from the user
-     * 
-     * @return Start position of the user's move
-     */
-    private Position getStartMove() {
-        String movingPiece ="";
-        Position movingPiecePosition;
-        int x = -1;
-        int y = -1;
-
-        while (movingPiece.length()!=2 || !board.insideBoard(y,x)) {
-            movingPiece = UserInterface.getStringInput("From what position do you want to move a piece?");
-            if (movingPiece.length()!=2) {
-                System.out.println("Not a Position");
-            } else {
-                x = Position.stringToXPosition(movingPiece);
-                y = Position.stringToYPosition(movingPiece);
-                if (!board.insideBoard(y,x)) {
-                    System.out.println("Position is ouside of the board");
-                }
-            }
-        }
-        movingPiecePosition = board.getPosition(y,x); //NOTE: y comes first here since our array is board[rows][columns], but y=row and x=column
-        return movingPiecePosition;
-    }
-
-    /**
-     * Gets the end position of a move from the user
-     * 
-     * @return End position of the user's move
-     */
-    private Position getEndMove() {
-        String movedPiece ="";
-        Position movedPiecePosition;
-        int x = -1;
-        int y = -1;
-
-        while (movedPiece.length()!=2 || !board.insideBoard(x,y)) {
-            movedPiece = UserInterface.getStringInput("Where do you want to move?");
-            if (movedPiece.length()!=2) {
-                System.out.println("Not a Position");
-            } else {
-                x = Position.stringToXPosition(movedPiece);
-                y = Position.stringToYPosition(movedPiece);
-                if (!board.insideBoard(x,y)) {
-                    System.out.println("Position is ouside of the board");
-                }
-            }
-        }
-        movedPiecePosition = board.getPosition(y,x); //NOTE: y comes first here since our array is board[rows][columns], but y=row and x=column
-        return movedPiecePosition;
     }
 
 }

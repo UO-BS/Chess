@@ -40,7 +40,7 @@ public class Player{
         playerState=checkmate;
     }
 
-    public int getCheckmated(){
+    public int getPlayerState(){
         return playerState;
     }
 

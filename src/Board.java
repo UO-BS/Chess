@@ -36,44 +36,6 @@ public class Board {
     }
 
     /**
-     * Displays an ASCII board to the console.
-     */
-    public void display() {
-        
-        for (int i=totalRow;i>=0;i--) {
-            for (int j=0;j<totalColumn;j++){
-                System.out.print("----");
-            }
-            System.out.println("");
-            
-            if (i==0){
-                
-                System.out.print("* |");
-                for(int j=0;j<totalColumn;j++) {
-                    System.out.print(Character.toString((char) j+65 )+"  |");
-                }
-                System.out.println("");
-
-            } else {
-            
-                System.out.print(i +" |");
-                for(int j=0;j<totalColumn;j++) {
-                    if (fullBoard[i-1][j].getCurrentPiece()!=null) {
-                        System.out.print(fullBoard[i-1][j].getCurrentPiece().toString());
-                        System.out.print(" |");
-                    } else {
-                        System.out.print("   |");
-                    }
-                }
-                System.out.println("");
-            }
-        }
-        
-        
-
-    }
-
-    /**
      * Returns the position at the specified row and column.
      * 
      * @param rowNumber The row of the requested position.
