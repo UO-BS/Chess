@@ -9,6 +9,12 @@ public class King extends Piece{
         super(player, position);
     }
 
+    public Piece copyPiece(){
+        Piece newPiece = new King(this.getOwner(),this.getPosition());
+        newPiece.setHasMoved(this.getHasMoved());
+        newPiece.setState(this.getState());
+        return newPiece;
+    }
     
     public boolean canMove(Board board, Move newMove) {
         Position initial = newMove.getStartPosition();

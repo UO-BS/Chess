@@ -19,6 +19,20 @@ public class Position{
         yPos = y;
     }
 
+    /**
+     * Generates a copy of a Position on a chess board.
+     * 
+     * @param original The original Position being copied
+     */
+    public Position(Position original){
+        xPos = original.xPos;
+        yPos = original.yPos;
+        if (original.currentPiece != null) {
+            currentPiece = original.currentPiece.copyPiece();
+            currentPiece.setPosition(this);
+        }
+    }
+
     public int getX() {
         return xPos;
     }

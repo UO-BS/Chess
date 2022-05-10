@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 /**
  * Class for a single game of chess.
  * @author UO-BS
@@ -10,6 +11,7 @@ public class Game {
     private Player currentTurn;
     private boolean gameOver;
     private Piece[] kingList;
+    private LinkedList<Move> moveHistory;
 
     /**
      * Generates a Custom game of Chess.
@@ -23,6 +25,7 @@ public class Game {
         this.kingList = new Piece[2];
         board = new Board(boardHeight,boardWidth);
         gameOver = false;
+        moveHistory = new LinkedList<Move>();
 
         for (int p=0;p<playerList.length ;p++) {
             System.out.println("Placing "+playerList[p].getName()+"'s pieces");
@@ -96,6 +99,7 @@ public class Game {
         this.kingList = new Piece[2];
         board = new Board(8,8);
         gameOver = false;
+        moveHistory = new LinkedList<Move>();
         
         for (int p=0;p<playerList.length ;p++) {    //This is standard board generation
             for (int i=0;i<8;i++) {
@@ -202,6 +206,7 @@ public class Game {
      * @param move The move that is being made.
      */
     private void movePiece(Move move) {
+        moveHistory.addLast(new Move(move));
         Position initial = move.getStartPosition();
         Position end = move.getEndPosition();
         
@@ -249,6 +254,7 @@ public class Game {
                     break;
             }
         }
+        
         
     }
 

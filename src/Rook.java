@@ -8,6 +8,13 @@ public class Rook extends Piece{
         super(player, position);
     }
 
+    public Piece copyPiece(){
+        Piece newPiece = new Rook(this.getOwner(),this.getPosition());
+        newPiece.setHasMoved(this.getHasMoved());
+        newPiece.setState(this.getState());
+        return newPiece;
+    }
+
     public boolean canMove(Board board, Move newMove) {
         Position initial = newMove.getStartPosition();
         Position end = newMove.getEndPosition();

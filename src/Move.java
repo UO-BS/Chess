@@ -19,6 +19,17 @@ public class Move {
         end = endPosition;
     }
 
+    /**
+     * Generates a copy of a move for a piece.
+     * 
+     * @param original The original Move being copied
+     */
+    public Move(Move original){
+        start = new Position(original.start);
+        end = new Position(original.end);
+        specialMove = original.specialMove;
+    }
+
     public Move(Position startPosition, Position endPosition, String specialIdentifier){
         start = startPosition;
         end = endPosition;

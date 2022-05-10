@@ -23,6 +23,8 @@ public abstract class Piece {
         currentPosition = position;
     }
 
+    public abstract Piece copyPiece();
+
     public Position getPosition() {
         return currentPosition;
     }

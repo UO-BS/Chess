@@ -9,6 +9,12 @@ public class Knight extends Piece{
         super(player, position);
     }
 
+    public Piece copyPiece(){
+        Piece newPiece = new Knight(this.getOwner(),this.getPosition());
+        newPiece.setHasMoved(this.getHasMoved());
+        newPiece.setState(this.getState());
+        return newPiece;
+    }
 
     public boolean canMove(Board board, Move newMove) {
         Position initial = newMove.getStartPosition();

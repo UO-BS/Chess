@@ -11,6 +11,14 @@ public class Pawn extends Piece{
         super(player, position);
     }
 
+    public Piece copyPiece(){
+        Piece newPiece = new Pawn(this.getOwner(),this.getPosition());
+        newPiece.setHasMoved(this.getHasMoved());
+        newPiece.setState(this.getState());
+        System.out.println("pawn copied");
+        return newPiece;
+    }
+
     public boolean canMove(Board board, Move newMove) {
         Position initial = newMove.getStartPosition();
         Position end = newMove.getEndPosition();
