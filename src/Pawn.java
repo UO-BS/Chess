@@ -58,7 +58,6 @@ public class Pawn extends Piece{
                     Move testMove = new Move(this.getPosition(),board.getPosition(i, j));
                     if (testMove.getEndPosition().getY()==(board.getRows()-1*this.getOwner().getOrientation())%(board.getRows()+1)) {
                         testMove.setSpecial("PawnPromotion");
-                        System.out.println("pawnpromote1");
                     }
 
                     if (this.canMove(board, testMove)) {

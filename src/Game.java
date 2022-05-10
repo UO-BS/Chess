@@ -37,7 +37,6 @@ public class Game {
                         Position pawnPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
                         Piece pawnPiece = new Pawn(playerList[p],null);
                         board.setPiece(pawnPiece, pawnPosition);
-                        pawnPiece.setPosition(pawnPosition);
                         playerList[p].addPiece(pawnPiece);
                         break;
                     case "King":
@@ -45,7 +44,6 @@ public class Game {
                             Position kingPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
                             Piece kingPiece = new King(playerList[p],null);
                             board.setPiece(kingPiece, kingPosition);
-                            kingPiece.setPosition(kingPosition);
                             playerList[p].addPiece(kingPiece);
                             kingList[p] = kingPiece;
                         } else {
@@ -56,28 +54,24 @@ public class Game {
                         Position queenPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
                         Piece queenPiece = new Queen(playerList[p],null);
                         board.setPiece(queenPiece, queenPosition);
-                        queenPiece.setPosition(queenPosition);
                         playerList[p].addPiece(queenPiece);
                         break;
                     case "Bishop":
                         Position bishopPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
                         Piece bishopPiece = new Bishop(playerList[p],null);
                         board.setPiece(bishopPiece, bishopPosition);
-                        bishopPiece.setPosition(bishopPosition);
                         playerList[p].addPiece(bishopPiece);
                         break;
                     case "Knight":
                         Position knightPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
                         Piece knightPiece = new Knight(playerList[p],null);
                         board.setPiece(knightPiece,knightPosition );
-                        knightPiece.setPosition(knightPosition);
                         playerList[p].addPiece(knightPiece);
                         break;
                     case "Rook":
                         Position rookPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
                         Piece rookPiece = new Rook(playerList[p],null);
                         board.setPiece(rookPiece,rookPosition);
-                        rookPiece.setPosition(rookPosition);
                         playerList[p].addPiece(rookPiece);
                         break;
                     case "Done":
@@ -105,56 +99,47 @@ public class Game {
         
         for (int p=0;p<playerList.length ;p++) {    //This is standard board generation
             for (int i=0;i<8;i++) {
-                Position pawnPosition = new Position(((8+ 2*playerList[p].getOrientation()) %9), i);
+                Position pawnPosition = board.getPosition(((8+ 2*playerList[p].getOrientation()) %9), i);
                 Piece pawnPiece = new Pawn(playerList[p],null);
                 board.setPiece(pawnPiece, pawnPosition);
-                pawnPiece.setPosition(pawnPosition);
                 playerList[p].addPiece(pawnPiece);
             }
 
-            Position kingPosition = new Position(((8+ 1*playerList[p].getOrientation()) %9),3);
+            Position kingPosition = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9),3);
             Piece kingPiece = new King(playerList[p],null);
             board.setPiece(kingPiece, kingPosition);
-            kingPiece.setPosition(kingPosition);
             playerList[p].addPiece(kingPiece);
             kingList[p] = kingPiece;
             
-            Position queenPosition = new Position(((8+ 1*playerList[p].getOrientation()) %9), 4);
+            Position queenPosition = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 4);
             Piece queenPiece = new Queen(playerList[p],null);
             board.setPiece(queenPiece, queenPosition);
-            queenPiece.setPosition(queenPosition);
             playerList[p].addPiece(queenPiece);
             
-            Position bishopPosition1 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 5);
-            Position bishopPosition2 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 2);
+            Position bishopPosition1 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 5);
+            Position bishopPosition2 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 2);
             Piece bishopPiece1 = new Bishop(playerList[p],null);
             Piece bishopPiece2 = new Bishop(playerList[p],null);
             board.setPiece(bishopPiece1, bishopPosition1);
             board.setPiece(bishopPiece2, bishopPosition2);
-            bishopPiece1.setPosition(bishopPosition1);
-            bishopPiece2.setPosition(bishopPosition2);
             playerList[p].addPiece(bishopPiece1);
             playerList[p].addPiece(bishopPiece2);
             
-            Position knightPosition1 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 1);
-            Position knightPosition2 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 6);
+            Position knightPosition1 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 1);
+            Position knightPosition2 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 6);
             Piece knightPiece1 = new Knight(playerList[p],null);
             Piece knightPiece2 = new Knight(playerList[p],null);
             board.setPiece(knightPiece1,knightPosition1 );
             board.setPiece(knightPiece2,knightPosition2 );
-            knightPiece1.setPosition(knightPosition1);
-            knightPiece2.setPosition(knightPosition2);
             playerList[p].addPiece(knightPiece1);
             playerList[p].addPiece(knightPiece2);
             
-            Position rookPosition1 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 0);
-            Position rookPosition2 = new Position(((8+ 1*playerList[p].getOrientation()) %9), 7);
+            Position rookPosition1 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 0);
+            Position rookPosition2 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 7);
             Piece rookPiece1 = new Rook(playerList[p],null);
             Piece rookPiece2 = new Rook(playerList[p],null);
             board.setPiece(rookPiece1,rookPosition1 );
             board.setPiece(rookPiece2,rookPosition2 );
-            rookPiece1.setPosition(rookPosition1);
-            rookPiece2.setPosition(rookPosition2);
             playerList[p].addPiece(rookPiece1);
             playerList[p].addPiece(rookPiece2);
 
@@ -228,9 +213,9 @@ public class Game {
         end.setCurrentPiece(initial.getCurrentPiece());
         end.getCurrentPiece().setPosition(end);
         initial.setCurrentPiece(null);
+
         
         if (move.getSpecial()!=null) {
-            System.out.println("pawnpromote2");
             switch (move.getSpecial()) {
                 case "PawnPromotion":
                     String[] validPieces = new String[]{"Pawn","King","Queen","Bishop","Knight","Rook"};

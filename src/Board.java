@@ -86,6 +86,9 @@ public class Board {
     public void setPiece(Piece newPiece, int rowNumber, int columnNumber) {
         fullBoard[rowNumber][columnNumber].setCurrentPiece(newPiece);
         this.getPosition(rowNumber, columnNumber).setCurrentPiece(newPiece);
+        if (newPiece !=null) {
+            newPiece.setPosition(this.getPosition(rowNumber, columnNumber));
+        }
     }
 
     /**
@@ -99,6 +102,10 @@ public class Board {
         int rowNumber = position.getY();
         fullBoard[rowNumber][columnNumber].setCurrentPiece(newPiece);
         position.setCurrentPiece(newPiece);
+        if (newPiece !=null) {
+            newPiece.setPosition(position);
+        }
+        
     }
 
 }
