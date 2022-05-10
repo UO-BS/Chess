@@ -9,6 +9,10 @@ public class King extends Piece{
         super(player, position);
     }
 
+    public PieceType getPieceType(){
+        return PieceType.KING;
+    }
+
     public Piece copyPiece(){
         Piece newPiece = new King(this.getOwner(),this.getPosition());
         newPiece.setHasMoved(this.getHasMoved());
@@ -22,11 +26,12 @@ public class King extends Piece{
         //To be added: Check if spot is dangerous
         int xDistance = initial.getXDistance(end);
         int yDistance = initial.getYDistance(end);
-        
-        if (Math.abs(xDistance)>1 || Math.abs(yDistance)>1 || (xDistance==0 && yDistance==0)) {
-            return false;
+
+        if (Math.abs(xDistance)<=1 && Math.abs(yDistance)<=1 && (xDistance!=0 || yDistance!=0)) {
+            return true;
         }
-        return true;
+        
+        return false;
     }
 
     public String toString(){

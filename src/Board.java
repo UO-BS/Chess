@@ -7,6 +7,7 @@ public class Board {
     private Position[][] fullBoard;
     private int totalRow; //columnNumber
     private int totalColumn; //rowNumber
+    private Position vulnerableToEnPassant;
 
     /**
      * Generates a new chess board.
@@ -25,6 +26,14 @@ public class Board {
             }
         }
 
+    }
+
+    public Position getVulnerableToEnPassant(){
+        return vulnerableToEnPassant;
+    }
+
+    public void setVulnerableToEnPassant(Position vulnerablePosition){
+        vulnerableToEnPassant = vulnerablePosition;
     }
 
     public int getRows(){

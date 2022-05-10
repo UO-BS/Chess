@@ -9,6 +9,10 @@ public class Bishop extends Piece{
         super(player, position);
     }
 
+    public PieceType getPieceType(){
+        return PieceType.BISHOP;
+    }
+
     public Piece copyPiece(){
         Piece newPiece = new Bishop(this.getOwner(),this.getPosition());
         newPiece.setHasMoved(this.getHasMoved());

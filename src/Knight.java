@@ -9,6 +9,10 @@ public class Knight extends Piece{
         super(player, position);
     }
 
+    public PieceType getPieceType(){
+        return PieceType.KNIGHT;
+    }
+
     public Piece copyPiece(){
         Piece newPiece = new Knight(this.getOwner(),this.getPosition());
         newPiece.setHasMoved(this.getHasMoved());

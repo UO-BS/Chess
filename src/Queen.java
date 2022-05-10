@@ -9,6 +9,10 @@ public class Queen extends Piece{
         super(player, position);
     }
 
+    public PieceType getPieceType(){
+        return PieceType.QUEEN;
+    }
+
     public Piece copyPiece(){
         Piece newPiece = new Queen(this.getOwner(),this.getPosition());
         newPiece.setHasMoved(this.getHasMoved());

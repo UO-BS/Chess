@@ -8,6 +8,10 @@ public class Rook extends Piece{
         super(player, position);
     }
 
+    public PieceType getPieceType(){
+        return PieceType.ROOK;
+    }
+
     public Piece copyPiece(){
         Piece newPiece = new Rook(this.getOwner(),this.getPosition());
         newPiece.setHasMoved(this.getHasMoved());

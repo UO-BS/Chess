@@ -212,14 +212,14 @@ public class Game {
         
         initial.getCurrentPiece().setHasMoved(true); 
         if (end.getCurrentPiece()!=null) {
-            System.out.println(end.getCurrentPiece()+" has been removed"); //Later this will be added to a score system
+            System.out.println(end.getCurrentPiece()+" has been removed"); 
             end.getCurrentPiece().setState(false);
         }
         end.setCurrentPiece(initial.getCurrentPiece());
         end.getCurrentPiece().setPosition(end);
         initial.setCurrentPiece(null);
 
-        
+        board.setVulnerableToEnPassant(null);
         if (move.getSpecial()!=null) {
             switch (move.getSpecial()) {
                 case "PawnPromotion":
@@ -251,6 +251,15 @@ public class Game {
                             board.setPiece(rookPiece, end);
                             break;
                     }
+                    break;
+                case "VulnerableToEnPassant":
+                    board.setVulnerableToEnPassant(board.getPosition((move.getStartPosition().getY()+move.getEndPosition().getY())/2, move.getStartPosition().getX()));
+                    break;
+                case "EnPassant":
+                    Position passingPiecePosition = board.getPosition(move.getEndPosition().getY()-(move.getStartPosition().getYDistance(move.getEndPosition())),move.getEndPosition().getX());
+                    System.out.println(passingPiecePosition.getCurrentPiece()+" has been removed"); 
+                    passingPiecePosition.getCurrentPiece().setState(false);
+                    board.setPiece(null, passingPiecePosition);
                     break;
             }
         }
@@ -294,7 +303,7 @@ public class Game {
      */
     private void doTurn() {
         Move newMove = new Move(new Position(-1, -1),new Position(-1, -1));
-        ArrayList<Move> moveOptions = this.allValidMoves(currentTurn, this.allPossibleMoves(currentTurn));
+        ArrayList<Move> moveOptions = this.allValidMoves(currentTurn, Game.allPossibleMoves(board, currentTurn));
         boolean checked = false; //Variable so that we do not have to look for check more than once per turn
         int moveNumber = -1;
 
@@ -337,17 +346,11 @@ public class Game {
                 checkedKing = kingList[i];
             }
         }
-
         
         for (int i =0;i<playerList.length;i++) {
             if (playerList[i]!=checkedPlayer) {
-                ArrayList<Move> possibleDangers = this.allPossibleMoves(playerList[i]);
-                for (int j=0;j<possibleDangers.size();j++){
-                    if (possibleDangers.get(j).getEndPosition().getCurrentPiece()!=null) {
-                        if (possibleDangers.get(j).getEndPosition().getCurrentPiece().equals(checkedKing)) {
-                            return true;
-                        }
-                    }
+                if (isUnderAttack(playerList[i], board, checkedKing.getPosition())) {
+                    return true;
                 }
             }
         }
@@ -355,12 +358,32 @@ public class Game {
     }
 
     /**
+     * Determines if a given position can be attacked by a given player
+     * 
+     * @param attackingPlayer The player that could attack the square.
+     * @param board The chess board.
+     * @param position The potentially dangerous position.
+     * @return Boolean representing wether the given position can be attacked by a given player
+     */
+    public static boolean isUnderAttack(Player attackingPlayer, Board board, Position position){
+        ArrayList<Move> possibleDangers = Game.allPossibleMoves(board, attackingPlayer);
+        for (int j=0;j<possibleDangers.size();j++){
+            if (possibleDangers.get(j).getEndPosition().equalsXY(position)) {
+                return true;
+            }
+        }
+        return false;
+        
+    }
+
+    /**
      * Generates a single ArrayList that contains every possible move that a player's pieces can make.
      * 
-     * @param player The player that the moves are being generated for
+     * @param board The chess board.
+     * @param player The player that the moves are being generated for.
      * @return ArrayList of every possible move that a player's pieces can make.
      */
-    private ArrayList<Move> allPossibleMoves(Player player){
+    private static ArrayList<Move> allPossibleMoves(Board board, Player player){
         ArrayList<Move> fullList = new ArrayList<>();
         for (int i=0;i<player.getPieceList().size();i++) {
             fullList.addAll(player.getPieceList().get(i).getPossibleMoves(board));
