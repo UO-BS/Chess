@@ -109,13 +109,13 @@ public class Game {
                 playerList[p].addPiece(pawnPiece);
             }
 
-            Position kingPosition = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9),3);
+            Position kingPosition = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9),4);
             Piece kingPiece = new King(playerList[p],null);
             board.setPiece(kingPiece, kingPosition);
             playerList[p].addPiece(kingPiece);
             kingList[p] = kingPiece;
             
-            Position queenPosition = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 4);
+            Position queenPosition = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 3);
             Piece queenPiece = new Queen(playerList[p],null);
             board.setPiece(queenPiece, queenPosition);
             playerList[p].addPiece(queenPiece);
@@ -219,9 +219,11 @@ public class Game {
         end.getCurrentPiece().setPosition(end);
         initial.setCurrentPiece(null);
 
+        //This section deals with special moves
         board.setVulnerableToEnPassant(null);
         if (move.getSpecial()!=null) {
             switch (move.getSpecial()) {
+                
                 case "PawnPromotion":
                     String[] validPieces = new String[]{"Pawn","King","Queen","Bishop","Knight","Rook"};
                     String pieceChoice = UserInterface.getStringInput("Pawn is being promoted to what piece?", validPieces);
@@ -252,14 +254,47 @@ public class Game {
                             break;
                     }
                     break;
+                
                 case "VulnerableToEnPassant":
                     board.setVulnerableToEnPassant(board.getPosition((move.getStartPosition().getY()+move.getEndPosition().getY())/2, move.getStartPosition().getX()));
                     break;
+                
                 case "EnPassant":
                     Position passingPiecePosition = board.getPosition(move.getEndPosition().getY()-(move.getStartPosition().getYDistance(move.getEndPosition())),move.getEndPosition().getX());
                     System.out.println(passingPiecePosition.getCurrentPiece()+" has been removed"); 
                     passingPiecePosition.getCurrentPiece().setState(false);
                     board.setPiece(null, passingPiecePosition);
+                    break;
+
+                case "Castling":
+                    int xDistance = move.getStartPosition().getXDistance(move.getEndPosition());
+                    if (xDistance>0) { //Castled to the right
+                        for (int i=3;i<4;i++) {
+                            Position castledRookPosition = board.getPosition(move.getStartPosition().getY(), move.getStartPosition().getX()+i);
+                            if (castledRookPosition.getCurrentPiece()!=null) {
+                                if (castledRookPosition.getCurrentPiece().getPieceType()==PieceType.ROOK && !castledRookPosition.getCurrentPiece().getHasMoved()) {
+  
+                                    board.setPiece(castledRookPosition.getCurrentPiece(), board.getPosition(move.getStartPosition().getY(), move.getStartPosition().getX()+1));
+                                    castledRookPosition.getCurrentPiece().setHasMoved(true); 
+                                    board.setPiece(null, castledRookPosition);
+    
+                                }
+                            }
+                        }
+                    } else { //Castled to the left
+                        for (int i=3;i<4;i++) {
+                            Position castledRookPosition = board.getPosition(move.getStartPosition().getY(), move.getStartPosition().getX()-i);
+                            if (castledRookPosition.getCurrentPiece()!=null) {
+                                if (castledRookPosition.getCurrentPiece().getPieceType()==PieceType.ROOK && !castledRookPosition.getCurrentPiece().getHasMoved()) {
+  
+                                    board.setPiece(castledRookPosition.getCurrentPiece(), board.getPosition(move.getStartPosition().getY(), move.getStartPosition().getX()-1));
+                                    castledRookPosition.getCurrentPiece().setHasMoved(true); 
+                                    board.setPiece(null, castledRookPosition);
+    
+                                }
+                            }
+                        }
+                    }
                     break;
             }
         }

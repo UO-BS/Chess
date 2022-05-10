@@ -68,29 +68,35 @@ public abstract class Piece {
                 for (int j=0;j<board.getColumns();j++) {
                     Move testMove = new Move(currentPosition,board.getPosition(i, j));
 
-                    //Special Moves:
-                    //Pawn promotion
-                    if (testMove.getStartPosition().getCurrentPiece().getPieceType()==PieceType.PAWN 
-                            && testMove.getEndPosition().getY()==(board.getRows()-1*this.getOwner().getOrientation())%(board.getRows()+1)) {
-                        testMove.setSpecial("PawnPromotion");
-                    }
-                    //Vulnerable to EnPassant
-                    if (testMove.getStartPosition().getCurrentPiece().getPieceType()==PieceType.PAWN 
-                            && testMove.getStartPosition().getYDistance(testMove.getEndPosition())==2*this.getOwner().getOrientation() 
-                            && testMove.getStartPosition().getXDistance(testMove.getEndPosition())==0) {
-                        testMove.setSpecial("VulnerableToEnPassant");
-                    }
-                    //EnPassant
-                    if (board.getVulnerableToEnPassant()!=null){
-                        if (testMove.getStartPosition().getCurrentPiece().getPieceType()==PieceType.PAWN
-                                && testMove.getStartPosition().getYDistance(testMove.getEndPosition())==1*this.getOwner().getOrientation() 
-                                && Math.abs(testMove.getStartPosition().getXDistance(testMove.getEndPosition()))==1 
-                                && board.getVulnerableToEnPassant().equalsXY(testMove.getEndPosition())) {
-                            testMove.setSpecial("EnPassant");
-                        }
-                    }
-
                     if (this.canMove(board, testMove)) {
+
+                        //Special Moves:
+                        //Pawn promotion
+                        if (testMove.getStartPosition().getCurrentPiece().getPieceType()==PieceType.PAWN 
+                                && testMove.getEndPosition().getY()==(board.getRows()-1*this.getOwner().getOrientation())%(board.getRows()+1)) {
+                            testMove.setSpecial("PawnPromotion");
+                        }
+                        //Vulnerable to EnPassant
+                        if (testMove.getStartPosition().getCurrentPiece().getPieceType()==PieceType.PAWN 
+                                && testMove.getStartPosition().getYDistance(testMove.getEndPosition())==2*this.getOwner().getOrientation() 
+                                && testMove.getStartPosition().getXDistance(testMove.getEndPosition())==0) {
+                            testMove.setSpecial("VulnerableToEnPassant");
+                        }
+                        //EnPassant
+                        if (board.getVulnerableToEnPassant()!=null){
+                            if (testMove.getStartPosition().getCurrentPiece().getPieceType()==PieceType.PAWN
+                                    && testMove.getStartPosition().getYDistance(testMove.getEndPosition())==1*this.getOwner().getOrientation() 
+                                    && Math.abs(testMove.getStartPosition().getXDistance(testMove.getEndPosition()))==1 
+                                    && board.getVulnerableToEnPassant().equalsXY(testMove.getEndPosition())) {
+                            testMove.setSpecial("EnPassant");
+                            }
+                        }
+                        //Castling
+                        if (testMove.getStartPosition().getCurrentPiece().getPieceType()==PieceType.KING
+                                && Math.abs(testMove.getStartPosition().getXDistance(testMove.getEndPosition()))==2) {
+                            testMove.setSpecial("Castling");
+                        }
+
                         possibleMoves.add(testMove);
                     }
                 }
