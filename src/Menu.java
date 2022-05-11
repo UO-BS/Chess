@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+import java.util.ListIterator;
 /**
  * Class for the main menu.
  * @author UO-BS
@@ -39,8 +41,17 @@ public class Menu {
             System.out.println(winner.getName()+" Wins!");
         }
 
-    }
+        LinkedList<Move> moveHistory = currentGame.getMoveHistory();
+        ListIterator<Move> moveHistoryIterator = moveHistory.listIterator();
+        System.out.println("Move History:");
+        while (moveHistoryIterator.hasNext()) {
+            System.out.print(moveHistoryIterator.next()+" | ");
+            if (moveHistoryIterator.hasNext()) {
+                System.out.print(moveHistoryIterator.next());
+            }
+            System.out.println("");
+        }
 
-    
+    }
 
 }
