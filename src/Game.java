@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
+import java.util.Random.rand.nextInt;
 /**
  * Class for a single game of chess.
  * @author UO-BS
@@ -14,198 +16,28 @@ public class Game {
     private LinkedList<Move> moveHistory;
 
     /**
-     * Generates a Custom game of Chess.
-     * 
-     * @param playerList The list containing the opponents in this game of Chess.
-     * @param boardHeight The Height of a custom game board.
-     * @param boardWidth The Width of a custom game board.
-     */
-    public Game(Player[] playerList,int boardHeight,int boardWidth) { //constructor for custom games
-        this.playerList = playerList;
-        this.kingList = new Piece[playerList.length];
-        board = new Board(boardHeight,boardWidth);
-        gameOver = false;
-        moveHistory = new LinkedList<Move>();
-
-
-        String[] validOptions = new String[]{"Pawn","King","Queen","Bishop","Knight","Rook","Done","Switch"};
-        String userChoice="Switch";
-        int placingPlayerNumber = 0;
-        System.out.println("Placing "+playerList[placingPlayerNumber].getName()+"'s pieces");
-
-        while (!userChoice.equals("Done")) {
-            UserInterface.displayASCII(board);
-            userChoice = UserInterface.getStringInput("What type of piece would you like to place? (Write Switch to switch players, and Done when you've finished)", validOptions);
-            switch(userChoice) {
-                case "Switch":
-                    placingPlayerNumber++;
-                    if (placingPlayerNumber==playerList.length) {
-                        placingPlayerNumber=0;
-                    }
-                    System.out.println("Placing "+playerList[placingPlayerNumber].getName()+"'s pieces");
-
-                    break;
-                case "Done":
-                    for (int i=0;i<kingList.length;i++) {
-                        if (kingList[i]==null) {
-                            System.out.println("A player does not have a king");
-                            userChoice="";
-                        }
-                    }
-                    break;
-                case "Pawn":
-                    Position pawnPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
-                    Piece pawnPiece = new Pawn(playerList[placingPlayerNumber],null);
-                    if (pawnPosition.getCurrentPiece()!=null) {
-                        playerList[placingPlayerNumber].getPieceList().remove(pawnPosition.getCurrentPiece());
-                        if (pawnPosition.getCurrentPiece().getPieceType()==PieceType.KING) {
-                            for (int kingNumber=0;kingNumber<kingList.length;kingNumber++) {
-                                kingList[kingNumber]=null;
-                            }
-                        }
-                    }
-                    board.setPiece(pawnPiece, pawnPosition);
-                    playerList[placingPlayerNumber].addPiece(pawnPiece);
-                    break;
-                case "King":
-                    if (kingList[placingPlayerNumber]==null) {
-                        Position kingPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
-                        Piece kingPiece = new King(playerList[placingPlayerNumber],null);
-                        if (kingPosition.getCurrentPiece()!=null) {
-                            playerList[placingPlayerNumber].getPieceList().remove(kingPosition.getCurrentPiece());
-                            if (kingPosition.getCurrentPiece().getPieceType()==PieceType.KING) {
-                                for (int kingNumber=0;kingNumber<kingList.length;kingNumber++) {
-                                kingList[kingNumber]=null;
-                            }
-                            }
-                        }
-                        board.setPiece(kingPiece, kingPosition);
-                        playerList[placingPlayerNumber].addPiece(kingPiece);
-                        kingList[placingPlayerNumber] = kingPiece;
-                    } else {
-                        System.out.println("There is already a king for this player");
-                    }
-                    break;
-                case "Queen":
-                    Position queenPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
-                    Piece queenPiece = new Queen(playerList[placingPlayerNumber],null);
-                    if (queenPosition.getCurrentPiece()!=null) {
-                        playerList[placingPlayerNumber].getPieceList().remove(queenPosition.getCurrentPiece());
-                        if (queenPosition.getCurrentPiece().getPieceType()==PieceType.KING) {
-                            for (int kingNumber=0;kingNumber<kingList.length;kingNumber++) {
-                                kingList[kingNumber]=null;
-                            }
-                        }
-                    }
-                    board.setPiece(queenPiece, queenPosition);
-                    playerList[placingPlayerNumber].addPiece(queenPiece);
-                    break;
-                case "Bishop":
-                    Position bishopPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
-                    Piece bishopPiece = new Bishop(playerList[placingPlayerNumber],null);
-                    if (bishopPosition.getCurrentPiece()!=null) {
-                        playerList[placingPlayerNumber].getPieceList().remove(bishopPosition.getCurrentPiece());
-                        if (bishopPosition.getCurrentPiece().getPieceType()==PieceType.KING) {
-                            for (int kingNumber=0;kingNumber<kingList.length;kingNumber++) {
-                                kingList[kingNumber]=null;
-                            }
-                        }
-                    }
-                    board.setPiece(bishopPiece, bishopPosition);
-                    playerList[placingPlayerNumber].addPiece(bishopPiece);
-                    break;
-                case "Knight":
-                    Position knightPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
-                    Piece knightPiece = new Knight(playerList[placingPlayerNumber],null);
-                    if (knightPosition.getCurrentPiece()!=null) {
-                        playerList[placingPlayerNumber].getPieceList().remove(knightPosition.getCurrentPiece());
-                        if (knightPosition.getCurrentPiece().getPieceType()==PieceType.KING) {
-                            for (int kingNumber=0;kingNumber<kingList.length;kingNumber++) {
-                                kingList[kingNumber]=null;
-                            }
-                        }
-                    }
-                    board.setPiece(knightPiece,knightPosition );
-                    playerList[placingPlayerNumber].addPiece(knightPiece);
-                    break;
-                case "Rook":
-                    Position rookPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
-                    Piece rookPiece = new Rook(playerList[placingPlayerNumber],null);
-                    if (rookPosition.getCurrentPiece()!=null) {
-                        playerList[placingPlayerNumber].getPieceList().remove(rookPosition.getCurrentPiece());
-                        if (rookPosition.getCurrentPiece().getPieceType()==PieceType.KING) {
-                            for (int kingNumber=0;kingNumber<kingList.length;kingNumber++) {
-                                kingList[kingNumber]=null;
-                            }
-                        }
-                    }
-                    board.setPiece(rookPiece,rookPosition);
-                    playerList[placingPlayerNumber].addPiece(rookPiece);
-                    break;
-            }
-        }  
-    }
-
-    /**
-     * Generates the standard game of Chess.
+     * Generates a game of Chess.
      * 
      * @param playerList The list containing the 2 opponents in this game of Chess.
      */
-    public Game(Player[] playerList) {
+    public Game(Player[] playerList, String gameType) {
         this.playerList = playerList;
-        this.kingList = new Piece[2];
-        board = new Board(8,8);
+        this.kingList = new Piece[playerList.length];
         gameOver = false;
         moveHistory = new LinkedList<Move>();
         
-        for (int p=0;p<playerList.length ;p++) {    //This is standard board generation
-            for (int i=0;i<8;i++) {
-                Position pawnPosition = board.getPosition(((8+ 2*playerList[p].getOrientation()) %9), i);
-                Piece pawnPiece = new Pawn(playerList[p],null);
-                board.setPiece(pawnPiece, pawnPosition);
-                playerList[p].addPiece(pawnPiece);
-            }
-
-            Position kingPosition = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9),4);
-            Piece kingPiece = new King(playerList[p],null);
-            board.setPiece(kingPiece, kingPosition);
-            playerList[p].addPiece(kingPiece);
-            kingList[p] = kingPiece;
-            
-            Position queenPosition = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 3);
-            Piece queenPiece = new Queen(playerList[p],null);
-            board.setPiece(queenPiece, queenPosition);
-            playerList[p].addPiece(queenPiece);
-            
-            Position bishopPosition1 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 5);
-            Position bishopPosition2 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 2);
-            Piece bishopPiece1 = new Bishop(playerList[p],null);
-            Piece bishopPiece2 = new Bishop(playerList[p],null);
-            board.setPiece(bishopPiece1, bishopPosition1);
-            board.setPiece(bishopPiece2, bishopPosition2);
-            playerList[p].addPiece(bishopPiece1);
-            playerList[p].addPiece(bishopPiece2);
-            
-            Position knightPosition1 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 1);
-            Position knightPosition2 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 6);
-            Piece knightPiece1 = new Knight(playerList[p],null);
-            Piece knightPiece2 = new Knight(playerList[p],null);
-            board.setPiece(knightPiece1,knightPosition1 );
-            board.setPiece(knightPiece2,knightPosition2 );
-            playerList[p].addPiece(knightPiece1);
-            playerList[p].addPiece(knightPiece2);
-            
-            Position rookPosition1 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 0);
-            Position rookPosition2 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 7);
-            Piece rookPiece1 = new Rook(playerList[p],null);
-            Piece rookPiece2 = new Rook(playerList[p],null);
-            board.setPiece(rookPiece1,rookPosition1 );
-            board.setPiece(rookPiece2,rookPosition2 );
-            playerList[p].addPiece(rookPiece1);
-            playerList[p].addPiece(rookPiece2);
-
+        switch(gameType){
+            case "Standard":
+                generateStandardBoard();
+                break;
+            case "Custom":
+                generateCustomBoard();
+                break;
+            case "Chess960": 
+                generateChess960Board();
+                break;
         }
-
+        
     }
 
     /**
@@ -529,6 +361,283 @@ public class Game {
             }
         }
         return -1;
+    }
+
+    private void generateStandardBoard(){
+        board = new Board(8,8);
+        for (int p=0;p<playerList.length ;p++) {    //This is standard board generation
+            for (int i=0;i<8;i++) {
+                Position pawnPosition = board.getPosition(((8+ 2*playerList[p].getOrientation()) %9), i);
+                Piece pawnPiece = new Pawn(playerList[p],null);
+                board.setPiece(pawnPiece, pawnPosition);
+                playerList[p].addPiece(pawnPiece);
+            }
+
+            Position kingPosition = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9),4);
+            Piece kingPiece = new King(playerList[p],null);
+            board.setPiece(kingPiece, kingPosition);
+            playerList[p].addPiece(kingPiece);
+            kingList[p] = kingPiece;
+            
+            Position queenPosition = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 3);
+            Piece queenPiece = new Queen(playerList[p],null);
+            board.setPiece(queenPiece, queenPosition);
+            playerList[p].addPiece(queenPiece);
+            
+            Position bishopPosition1 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 5);
+            Position bishopPosition2 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 2);
+            Piece bishopPiece1 = new Bishop(playerList[p],null);
+            Piece bishopPiece2 = new Bishop(playerList[p],null);
+            board.setPiece(bishopPiece1, bishopPosition1);
+            board.setPiece(bishopPiece2, bishopPosition2);
+            playerList[p].addPiece(bishopPiece1);
+            playerList[p].addPiece(bishopPiece2);
+            
+            Position knightPosition1 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 1);
+            Position knightPosition2 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 6);
+            Piece knightPiece1 = new Knight(playerList[p],null);
+            Piece knightPiece2 = new Knight(playerList[p],null);
+            board.setPiece(knightPiece1,knightPosition1 );
+            board.setPiece(knightPiece2,knightPosition2 );
+            playerList[p].addPiece(knightPiece1);
+            playerList[p].addPiece(knightPiece2);
+            
+            Position rookPosition1 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 0);
+            Position rookPosition2 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), 7);
+            Piece rookPiece1 = new Rook(playerList[p],null);
+            Piece rookPiece2 = new Rook(playerList[p],null);
+            board.setPiece(rookPiece1,rookPosition1 );
+            board.setPiece(rookPiece2,rookPosition2 );
+            playerList[p].addPiece(rookPiece1);
+            playerList[p].addPiece(rookPiece2);
+
+        }
+    }
+
+    private void generateCustomBoard(){
+        int boardHeight = UserInterface.getIntInput("Enter the height of the board (2-20): ", 2, 20);
+        int boardWidth = UserInterface.getIntInput("Enter the width of the board (2-20): ", 2, 20);
+        board = new Board(boardHeight,boardWidth);
+
+        String[] validOptions = new String[]{"Pawn","King","Queen","Bishop","Knight","Rook","Done","Switch"};
+        String userChoice="Switch";
+        int placingPlayerNumber = 0;
+        System.out.println("Placing "+playerList[placingPlayerNumber].getName()+"'s pieces");
+
+        while (!userChoice.equals("Done")) {
+            UserInterface.displayASCII(board);
+            userChoice = UserInterface.getStringInput("What type of piece would you like to place? (Write Switch to switch players, and Done when you've finished)", validOptions);
+            switch(userChoice) {
+                case "Switch":
+                    placingPlayerNumber++;
+                    if (placingPlayerNumber==playerList.length) {
+                        placingPlayerNumber=0;
+                    }
+                    System.out.println("Placing "+playerList[placingPlayerNumber].getName()+"'s pieces");
+
+                    break;
+                case "Done":
+                    for (int i=0;i<kingList.length;i++) {
+                        if (kingList[i]==null) {
+                            System.out.println("A player does not have a king");
+                            userChoice="";
+                        }
+                    }
+                    break;
+                case "Pawn":
+                    Position pawnPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
+                    Piece pawnPiece = new Pawn(playerList[placingPlayerNumber],null);
+                    if (pawnPosition.getCurrentPiece()!=null) {
+                        playerList[placingPlayerNumber].getPieceList().remove(pawnPosition.getCurrentPiece());
+                        if (pawnPosition.getCurrentPiece().getPieceType()==PieceType.KING) {
+                            for (int kingNumber=0;kingNumber<kingList.length;kingNumber++) {
+                                kingList[kingNumber]=null;
+                            }
+                        }
+                    }
+                    board.setPiece(pawnPiece, pawnPosition);
+                    playerList[placingPlayerNumber].addPiece(pawnPiece);
+                    break;
+                case "King":
+                    if (kingList[placingPlayerNumber]==null) {
+                        Position kingPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
+                        Piece kingPiece = new King(playerList[placingPlayerNumber],null);
+                        if (kingPosition.getCurrentPiece()!=null) {
+                            playerList[placingPlayerNumber].getPieceList().remove(kingPosition.getCurrentPiece());
+                            if (kingPosition.getCurrentPiece().getPieceType()==PieceType.KING) {
+                                for (int kingNumber=0;kingNumber<kingList.length;kingNumber++) {
+                                kingList[kingNumber]=null;
+                            }
+                            }
+                        }
+                        board.setPiece(kingPiece, kingPosition);
+                        playerList[placingPlayerNumber].addPiece(kingPiece);
+                        kingList[placingPlayerNumber] = kingPiece;
+                    } else {
+                        System.out.println("There is already a king for this player");
+                    }
+                    break;
+                case "Queen":
+                    Position queenPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
+                    Piece queenPiece = new Queen(playerList[placingPlayerNumber],null);
+                    if (queenPosition.getCurrentPiece()!=null) {
+                        playerList[placingPlayerNumber].getPieceList().remove(queenPosition.getCurrentPiece());
+                        if (queenPosition.getCurrentPiece().getPieceType()==PieceType.KING) {
+                            for (int kingNumber=0;kingNumber<kingList.length;kingNumber++) {
+                                kingList[kingNumber]=null;
+                            }
+                        }
+                    }
+                    board.setPiece(queenPiece, queenPosition);
+                    playerList[placingPlayerNumber].addPiece(queenPiece);
+                    break;
+                case "Bishop":
+                    Position bishopPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
+                    Piece bishopPiece = new Bishop(playerList[placingPlayerNumber],null);
+                    if (bishopPosition.getCurrentPiece()!=null) {
+                        playerList[placingPlayerNumber].getPieceList().remove(bishopPosition.getCurrentPiece());
+                        if (bishopPosition.getCurrentPiece().getPieceType()==PieceType.KING) {
+                            for (int kingNumber=0;kingNumber<kingList.length;kingNumber++) {
+                                kingList[kingNumber]=null;
+                            }
+                        }
+                    }
+                    board.setPiece(bishopPiece, bishopPosition);
+                    playerList[placingPlayerNumber].addPiece(bishopPiece);
+                    break;
+                case "Knight":
+                    Position knightPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
+                    Piece knightPiece = new Knight(playerList[placingPlayerNumber],null);
+                    if (knightPosition.getCurrentPiece()!=null) {
+                        playerList[placingPlayerNumber].getPieceList().remove(knightPosition.getCurrentPiece());
+                        if (knightPosition.getCurrentPiece().getPieceType()==PieceType.KING) {
+                            for (int kingNumber=0;kingNumber<kingList.length;kingNumber++) {
+                                kingList[kingNumber]=null;
+                            }
+                        }
+                    }
+                    board.setPiece(knightPiece,knightPosition );
+                    playerList[placingPlayerNumber].addPiece(knightPiece);
+                    break;
+                case "Rook":
+                    Position rookPosition = UserInterface.getPositionFromUser(board, "Where would you like to place it?");
+                    Piece rookPiece = new Rook(playerList[placingPlayerNumber],null);
+                    if (rookPosition.getCurrentPiece()!=null) {
+                        playerList[placingPlayerNumber].getPieceList().remove(rookPosition.getCurrentPiece());
+                        if (rookPosition.getCurrentPiece().getPieceType()==PieceType.KING) {
+                            for (int kingNumber=0;kingNumber<kingList.length;kingNumber++) {
+                                kingList[kingNumber]=null;
+                            }
+                        }
+                    }
+                    board.setPiece(rookPiece,rookPosition);
+                    playerList[placingPlayerNumber].addPiece(rookPiece);
+                    break;
+            }
+        }
+    }
+
+    private void generateChess960Board(){
+        boolean[] filledColumns = new boolean[]{false,false,false,false,false,false,false,false};
+        Random rand = new Random();
+
+        //Generating random column numbers for pieces following chess960 placement rules
+        int kingColumnNumber = rand.nextInt(6)+1;
+        filledColumns[kingColumnNumber] =true;
+        int rookColumnNumber1 = rand.nextInt(kingColumnNumber); //Rook to the left of the king
+        filledColumns[rookColumnNumber1] =true;
+        int rookColumnNumber2 = rand.nextInt(7-kingColumnNumber)+kingColumnNumber+1; //Rook to the right of the king
+        filledColumns[rookColumnNumber2] =true;
+
+        int bishopColumnNumber1=-1;
+        do {
+            bishopColumnNumber1 = rand.nextInt(8);
+        } while (filledColumns[bishopColumnNumber1]);
+        filledColumns[bishopColumnNumber1]=true;
+
+        int bishopColumnNumber2=-1;
+        if (bishopColumnNumber1%2==0) { //Bishop1's column number is even, so Bishop2 must be odd
+            do {
+                bishopColumnNumber2 = rand.nextInt(8);
+            } while (filledColumns[bishopColumnNumber2] && bishopColumnNumber2%2!=1);
+        } else {                        //Bishop1's column number is odd so Bishop2 must be even
+            do {
+                bishopColumnNumber2 = rand.nextInt(8);
+            } while (filledColumns[bishopColumnNumber2] && bishopColumnNumber2%2!=0);
+        }
+        filledColumns[bishopColumnNumber2]=true;
+
+        int knightColumnNumber1=-1;
+        do {
+            knightColumnNumber1 = rand.nextInt(8);
+        } while (filledColumns[knightColumnNumber1]);
+        filledColumns[knightColumnNumber1]=true;
+        int knightColumnNumber2=-1;
+        do {
+            knightColumnNumber2 = rand.nextInt(8);
+        } while (filledColumns[knightColumnNumber2]);
+        filledColumns[knightColumnNumber2]=true;
+
+        int queenColumnNumber=-1;
+        for (int i=0;i<filledColumns.length;i++) {
+            if (!filledColumns[i]){
+                queenColumnNumber = i;
+            }
+        }
+        filledColumns[queenColumnNumber]=true;
+
+        
+        
+        //Placing the pieces on the board
+        board = new Board(8,8);
+        for (int p=0;p<playerList.length ;p++) {
+            for (int i=0;i<8;i++) {
+                Position pawnPosition = board.getPosition(((8+ 2*playerList[p].getOrientation()) %9), i);
+                Piece pawnPiece = new Pawn(playerList[p],null);
+                board.setPiece(pawnPiece, pawnPosition);
+                playerList[p].addPiece(pawnPiece);
+            }
+
+            Position kingPosition = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9),kingColumnNumber);
+            Piece kingPiece = new King(playerList[p],null);
+            board.setPiece(kingPiece, kingPosition);
+            playerList[p].addPiece(kingPiece);
+            kingList[p] = kingPiece;
+            
+            Position queenPosition = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), queenColumnNumber);
+            Piece queenPiece = new Queen(playerList[p],null);
+            board.setPiece(queenPiece, queenPosition);
+            playerList[p].addPiece(queenPiece);
+
+            Position bishopPosition1 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), bishopColumnNumber1);
+            Position bishopPosition2 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), bishopColumnNumber2);
+            Piece bishopPiece1 = new Bishop(playerList[p],null);
+            Piece bishopPiece2 = new Bishop(playerList[p],null);
+            board.setPiece(bishopPiece1, bishopPosition1);
+            board.setPiece(bishopPiece2, bishopPosition2);
+            playerList[p].addPiece(bishopPiece1);
+            playerList[p].addPiece(bishopPiece2);
+            
+            Position knightPosition1 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), knightColumnNumber1);
+            Position knightPosition2 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), knightColumnNumber2);
+            Piece knightPiece1 = new Knight(playerList[p],null);
+            Piece knightPiece2 = new Knight(playerList[p],null);
+            board.setPiece(knightPiece1,knightPosition1 );
+            board.setPiece(knightPiece2,knightPosition2 );
+            playerList[p].addPiece(knightPiece1);
+            playerList[p].addPiece(knightPiece2);
+            
+            Position rookPosition1 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), rookColumnNumber1);
+            Position rookPosition2 = board.getPosition(((8+ 1*playerList[p].getOrientation()) %9), rookColumnNumber2);
+            Piece rookPiece1 = new Rook(playerList[p],null);
+            Piece rookPiece2 = new Rook(playerList[p],null);
+            board.setPiece(rookPiece1,rookPosition1 );
+            board.setPiece(rookPiece2,rookPosition2 );
+            playerList[p].addPiece(rookPiece1);
+            playerList[p].addPiece(rookPiece2);
+    
+        }
+        
     }
 
     public LinkedList<Move> getMoveHistory(){
