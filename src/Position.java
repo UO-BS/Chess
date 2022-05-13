@@ -83,6 +83,7 @@ public class Position{
         return new String(new char[] {xChar,yChar});
     }
 
+    //This equals method will return true if the 2 positions have the same X and Y (Does not chech if a piece is on the position)
     public boolean equalsXY(Position other) {
         if (this.xPos==other.getX() && this.yPos==other.getY()) {
             return true;

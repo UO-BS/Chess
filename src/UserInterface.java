@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Scanner;
 /**
  * Class to get user input from console
@@ -17,14 +19,14 @@ public class UserInterface{
     public static String getStringInput(String prompt, String[] validInputs) {
         String userInput = "";
         while (true) {
-            System.out.println(prompt);
+            UserInterface.displayText(prompt);
             userInput = sc.next();
             for (int i=0;i<validInputs.length;i++){
                 if (userInput.equals(validInputs[i])) {
                     return userInput;
                 }
             }
-            System.out.println("Invalid Input");
+            UserInterface.displayText("Invalid Input");
         }
 
     }
@@ -37,7 +39,7 @@ public class UserInterface{
      */
     public static String getStringInput(String prompt) {
         String userInput = "";
-        System.out.println(prompt);
+        UserInterface.displayText(prompt);
         userInput = sc.next();
         return userInput;
 
@@ -55,9 +57,9 @@ public class UserInterface{
         int userInput;
         
         do {
-            System.out.println(prompt);
+            UserInterface.displayText(prompt);
             while (!sc.hasNextInt()) {
-                System.out.println("Invalid Integer");
+                UserInterface.displayText("Invalid Integer");
                 sc.next();
             }
             userInput = sc.nextInt();
@@ -121,16 +123,44 @@ public class UserInterface{
         while (userInput.length()!=2 || !chessBoard.insideBoard(y,x)) {
             userInput = UserInterface.getStringInput(prompt);
             if (userInput.length()!=2) {
-                System.out.println("Not a Position");
+                UserInterface.displayText("Not a Position");
             } else {
                 x = Position.stringToXPosition(userInput);
                 y = Position.stringToYPosition(userInput);
                 if (!chessBoard.insideBoard(y,x)) {
-                    System.out.println("Position is ouside of the board");
+                    UserInterface.displayText("Position is ouside of the board");
                 }
             }
         }
         newPosition = chessBoard.getPosition(y,x); //NOTE: y comes first here since our array is board[rows][columns], but y=row and x=column
         return newPosition;
+    }
+
+    /**
+     * Displays text or prompts to the user. 
+     * Currently this program is console-based so it simply prints to console.
+     * 
+     * @param displayText The text to be displayed to the user
+     */
+    public static void displayText(String displayText){
+        System.out.println(displayText);
+    }
+
+    /**
+     * Displays the move history to the user.
+     * Currently this program is console-based so it simply prints it to console.
+     * 
+     * @param moveHistory The move histroy that is being displayed.
+     */
+    public static void displayMoveHistory(LinkedList<Move> moveHistory){
+        ListIterator<Move> moveHistoryIterator = moveHistory.listIterator();
+        System.out.println("Move History:");
+        while (moveHistoryIterator.hasNext()) {
+            System.out.print(moveHistoryIterator.next()+" | ");
+            if (moveHistoryIterator.hasNext()) {
+                System.out.print(moveHistoryIterator.next());
+            }
+            System.out.println("");
+        }
     }
 }

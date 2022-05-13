@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-import java.util.ListIterator;
 /**
  * Class for the main menu.
  * @author UO-BS
@@ -22,22 +20,14 @@ public class Menu {
         //Running the game and finding the winner
         Player winner = currentGame.runGame();
         if (winner == null) {
-            System.out.println("Nobody Wins!");
+            UserInterface.displayText("Nobody Wins!");
         } else {
-            System.out.println(winner.getName()+" Wins!");
+            UserInterface.displayText(winner.getName()+" Wins!");
         }
 
         //Prints the move history to the console
-        LinkedList<Move> moveHistory = currentGame.getMoveHistory();
-        ListIterator<Move> moveHistoryIterator = moveHistory.listIterator();
-        System.out.println("Move History:");
-        while (moveHistoryIterator.hasNext()) {
-            System.out.print(moveHistoryIterator.next()+" | ");
-            if (moveHistoryIterator.hasNext()) {
-                System.out.print(moveHistoryIterator.next());
-            }
-            System.out.println("");
-        }
+        UserInterface.displayMoveHistory(currentGame.getMoveHistory());
+        
 
     }
 

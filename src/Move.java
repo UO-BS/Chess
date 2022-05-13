@@ -1,12 +1,22 @@
+
+enum MoveType{
+    ENPASSANT,
+    VULNERABLETOENPASSANT,
+    PAWNPROMOTION,
+    CASTLING,
+    STANDARD
+}
+
 /**
  * Class representing a Move from one Position on the board to another.
  * @author UO-BS
  */
 public class Move {
 
+
     private Position start;
     private Position end;
-    private String specialMove; //Includes: enPassant, castling, pawnPromotion
+    private MoveType moveType;
 
     /**
      * Generates a move for a piece.
@@ -27,21 +37,21 @@ public class Move {
     public Move(Move original){
         start = new Position(original.start);
         end = new Position(original.end);
-        specialMove = original.specialMove;
+        moveType = original.moveType;
     }
 
-    public Move(Position startPosition, Position endPosition, String specialIdentifier){
+    public Move(Position startPosition, Position endPosition, MoveType specialIdentifier){
         start = startPosition;
         end = endPosition;
-        specialMove = specialIdentifier;
+        moveType = specialIdentifier;
     }
 
-    public String getSpecial(){
-        return specialMove;
+    public MoveType getMoveType(){
+        return moveType;
     }
 
-    public void setSpecial(String specialIdentifier){
-        specialMove = specialIdentifier;
+    public void setMoveType(MoveType specialIdentifier){
+        moveType = specialIdentifier;
     }
 
     public Position getStartPosition(){
@@ -60,10 +70,6 @@ public class Move {
         end=endPosition;
     }
 
-    public Move reverseMove(){
-        return new Move(end,start);
-    }
-
     public boolean equalsStartEnd(Move other){
         if (this.start.equals(other.getStartPosition()) && this.end.equals(other.getEndPosition())) {
             return true;
@@ -72,7 +78,7 @@ public class Move {
     }
 
     public boolean equals(Move other){
-        if (this.start.equals(other.getStartPosition()) && this.end.equals(other.getEndPosition()) && specialMove==other.getSpecial()) {
+        if (this.start.equals(other.getStartPosition()) && this.end.equals(other.getEndPosition()) && moveType==other.getMoveType()) {
             return true;
         }
         return false;

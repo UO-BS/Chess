@@ -5,8 +5,8 @@
 public class Board {
 
     private Position[][] fullBoard;
-    private int totalRow; //columnNumber
-    private int totalColumn; //rowNumber
+    private int totalRow; 
+    private int totalColumn; 
     private Position vulnerableToEnPassant;
 
     /**
@@ -76,8 +76,8 @@ public class Board {
      * @return Boolean representing if the position is within the current board.
      */
     public boolean insideBoard(Position position) {
-        int rowNumber = position.getX;
-        int columnNumber = position.getY;
+        int rowNumber = position.getX();
+        int columnNumber = position.getY();
 
         if ( rowNumber > totalRow-1 || rowNumber<0 || columnNumber > totalColumn-1 || columnNumber<0) {
             return false;

@@ -102,7 +102,7 @@ public class Queen extends Piece{
             return true;
         }
 
-        return false; //returns false if move is neither Rook nor Bishop
+        return false; 
         
     }
 

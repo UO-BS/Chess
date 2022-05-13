@@ -1,5 +1,4 @@
 import java.lang.Math;
-import java.util.ArrayList;
 /**
  * Class representing a Pawn chess piece.
  * @author UO-BS

@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Random.rand.nextInt;
 /**
  * Class for a single game of chess.
  * @author UO-BS
@@ -61,7 +60,7 @@ public class Game {
                     }                        
 
                 }
-                System.out.println(currentTurn.getName()+"'s turn");
+                UserInterface.displayText(currentTurn.getName()+"'s turn");
                 UserInterface.displayASCII(board);
                 doTurn();
                 
@@ -101,7 +100,7 @@ public class Game {
         
         initial.getCurrentPiece().setHasMoved(true); 
         if (end.getCurrentPiece()!=null) {
-            System.out.println(end.getCurrentPiece()+" has been removed"); 
+            UserInterface.displayText(end.getCurrentPiece()+" has been removed"); 
             end.getCurrentPiece().setState(false);
         }
         end.setCurrentPiece(initial.getCurrentPiece());
@@ -110,10 +109,10 @@ public class Game {
 
         //This section deals with special moves
         board.setVulnerableToEnPassant(null);
-        if (move.getSpecial()!=null) {
-            switch (move.getSpecial()) {
+        if (move.getMoveType()!=null) {
+            switch (move.getMoveType()) {
                 
-                case "PawnPromotion":
+                case PAWNPROMOTION:
                     String[] validPieces = new String[]{"Pawn","King","Queen","Bishop","Knight","Rook"};
                     String pieceChoice = UserInterface.getStringInput("Pawn is being promoted to what piece?", validPieces);
                     switch (pieceChoice) {
@@ -144,18 +143,18 @@ public class Game {
                     }
                     break;
                 
-                case "VulnerableToEnPassant":
+                case VULNERABLETOENPASSANT:
                     board.setVulnerableToEnPassant(board.getPosition((move.getStartPosition().getY()+move.getEndPosition().getY())/2, move.getStartPosition().getX()));
                     break;
                 
-                case "EnPassant":
+                case ENPASSANT:
                     Position passingPiecePosition = board.getPosition(move.getEndPosition().getY()-(move.getStartPosition().getYDistance(move.getEndPosition())),move.getEndPosition().getX());
-                    System.out.println(passingPiecePosition.getCurrentPiece()+" has been removed"); 
+                    UserInterface.displayText(passingPiecePosition.getCurrentPiece()+" has been removed"); 
                     passingPiecePosition.getCurrentPiece().setState(false);
                     board.setPiece(null, passingPiecePosition);
                     break;
 
-                case "Castling":
+                case CASTLING:
                     int xDistance = move.getStartPosition().getXDistance(move.getEndPosition());
                     if (xDistance>0) { //Castled to the right
                         for (int i=3;i<4;i++) {
@@ -184,6 +183,8 @@ public class Game {
                             }
                         }
                     }
+                    break;
+                case STANDARD:
                     break;
             }
         }
@@ -232,16 +233,16 @@ public class Game {
         int moveNumber = -1;
 
         if (this.inCheck(currentTurn)){
-            System.out.println(currentTurn.getName()+" is in check...");
+            UserInterface.displayText(currentTurn.getName()+" is in check...");
             checked = true;
         }
 
         if (moveOptions.size()==0) {
             if (checked) {
-                System.out.println(currentTurn.getName()+" has been checkmated!");
+                UserInterface.displayText(currentTurn.getName()+" has been checkmated!");
                 currentTurn.setPlayerState(1);
             } else {
-                System.out.println(currentTurn.getName()+" has been stalemated!");
+                UserInterface.displayText(currentTurn.getName()+" has been stalemated!");
                 currentTurn.setPlayerState(2);
             }
             
@@ -291,8 +292,8 @@ public class Game {
      */
     public static boolean isUnderAttack(Player attackingPlayer, Board board, Position position){
         ArrayList<Move> possibleDangers = Game.allPossibleMoves(board, attackingPlayer);
-        for (int j=0;j<possibleDangers.size();j++){
-            if (possibleDangers.get(j).getEndPosition().equalsXY(position)) {
+        for (Move attack:possibleDangers){
+            if (attack.getEndPosition().equalsXY(position)) {
                 return true;
             }
         }
@@ -309,8 +310,8 @@ public class Game {
      */
     private static ArrayList<Move> allPossibleMoves(Board board, Player player){
         ArrayList<Move> fullList = new ArrayList<>();
-        for (int i=0;i<player.getPieceList().size();i++) {
-            fullList.addAll(player.getPieceList().get(i).getPossibleMoves(board));
+        for (Piece piece:player.getPieceList()) {
+            fullList.addAll(piece.getPossibleMoves(board));
         }
         return fullList;
     }
@@ -328,17 +329,17 @@ public class Game {
     private ArrayList<Move> allValidMoves(Player player, ArrayList<Move> possibleMoves){
         ArrayList<Move> fullValidList = new ArrayList<>();
         
-        for (int i=0;i<possibleMoves.size();i++) {
+        for (Move aMove:possibleMoves) {
             
-            if (possibleMoves.get(i).getEndPosition().getCurrentPiece()!=null) {    
-                if (player != possibleMoves.get(i).getEndPosition().getCurrentPiece().getOwner()) {
-                    if (testMoveCheck(possibleMoves.get(i))) { //Looking for "check" is costly, I put it in a new if{} so that it isnt called unless necessary
-                        fullValidList.add(possibleMoves.get(i));
+            if (aMove.getEndPosition().getCurrentPiece()!=null) {    
+                if (player != aMove.getEndPosition().getCurrentPiece().getOwner()) {
+                    if (testMoveCheck(aMove)) { //Looking for "check" is costly, I put it in a new if{} so that it isnt called unless necessary
+                        fullValidList.add(aMove);
                     }
                 }
             } else {
-                if (testMoveCheck(possibleMoves.get(i))) {
-                    fullValidList.add(possibleMoves.get(i));
+                if (testMoveCheck(aMove)) {
+                    fullValidList.add(aMove);
                 }
             }
 
@@ -422,7 +423,7 @@ public class Game {
         String[] validOptions = new String[]{"Pawn","King","Queen","Bishop","Knight","Rook","Done","Switch"};
         String userChoice="Switch";
         int placingPlayerNumber = 0;
-        System.out.println("Placing "+playerList[placingPlayerNumber].getName()+"'s pieces");
+        UserInterface.displayText("Placing "+playerList[placingPlayerNumber].getName()+"'s pieces");
 
         while (!userChoice.equals("Done")) {
             UserInterface.displayASCII(board);
@@ -433,13 +434,13 @@ public class Game {
                     if (placingPlayerNumber==playerList.length) {
                         placingPlayerNumber=0;
                     }
-                    System.out.println("Placing "+playerList[placingPlayerNumber].getName()+"'s pieces");
+                    UserInterface.displayText("Placing "+playerList[placingPlayerNumber].getName()+"'s pieces");
 
                     break;
                 case "Done":
                     for (int i=0;i<kingList.length;i++) {
                         if (kingList[i]==null) {
-                            System.out.println("A player does not have a king");
+                            UserInterface.displayText("A player does not have a king");
                             userChoice="";
                         }
                     }
@@ -474,7 +475,7 @@ public class Game {
                         playerList[placingPlayerNumber].addPiece(kingPiece);
                         kingList[placingPlayerNumber] = kingPiece;
                     } else {
-                        System.out.println("There is already a king for this player");
+                        UserInterface.displayText("There is already a king for this player");
                     }
                     break;
                 case "Queen":
