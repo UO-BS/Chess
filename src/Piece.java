@@ -62,7 +62,7 @@ public abstract class Piece {
      * @return An ArrayList containing all possible moves that a piece can piece
      */
     public ArrayList<Move> getPossibleMoves(Board board){
-        ArrayList<Move> possibleMoves = new ArrayList();
+        ArrayList<Move> possibleMoves = new ArrayList<Move>();
         if (inPlay) { //Cannot have any moves if the piece has been removed
             for (int i=0;i<board.getRows();i++) {
                 for (int j=0;j<board.getColumns();j++) {
