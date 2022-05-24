@@ -129,13 +129,13 @@ public class Game {
                             board.setPiece(bishopPiece, end);
                             break;
                         case "Knight":
-                            Piece knightPiece = new Queen(end.getCurrentPiece().getOwner(),end);   
+                            Piece knightPiece = new Knight(end.getCurrentPiece().getOwner(),end);   
                             end.getCurrentPiece().getOwner().addPiece(knightPiece);
                             end.getCurrentPiece().getOwner().removePiece(end.getCurrentPiece());    
                             board.setPiece(knightPiece, end);
                             break;
                         case "Rook":
-                            Piece rookPiece = new Queen(end.getCurrentPiece().getOwner(),end);   
+                            Piece rookPiece = new Rook(end.getCurrentPiece().getOwner(),end);   
                             end.getCurrentPiece().getOwner().addPiece(rookPiece);
                             end.getCurrentPiece().getOwner().removePiece(end.getCurrentPiece());    
                             board.setPiece(rookPiece, end);
