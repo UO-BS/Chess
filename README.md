@@ -1,10 +1,10 @@
 # Chess
 This is code for the game of console chess that I have created without the use of any tutorials.
 
-I have included (or plan to include) not only the standard game of chess but also some form of custom mode.
-In this custom mode the user would be able to create a custom board size and place pieces in chosen locations.
+I have included not only the standard game of chess but also a custom mode.
+In this custom mode the user can create a custom board size and place pieces in chosen locations.
 
-To run the game: Compile the src files and run the Menu class. The console prompts should guide you through the rest.
+To run the game: Compile the src files and run the Menu class
 I plan to change this to simply running a .exe file in the future
 
 Note about playerList: 
