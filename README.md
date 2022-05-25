@@ -1,7 +1,7 @@
 # Chess
 This is code for the game of console chess that I have created without the use of any tutorials.
 
-I have included not only the standard game of chess but also a custom mode.
+I have included not only the standard game of chess but also a custom mode and chess960.
 In this custom mode the user can create a custom board size and place pieces in chosen locations.
 
 To run the game: Compile the src files and run the Menu class
