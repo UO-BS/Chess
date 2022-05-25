@@ -157,30 +157,34 @@ public class Game {
                 case CASTLING:
                     int xDistance = move.getStartPosition().getXDistance(move.getEndPosition());
                     if (xDistance>0) { //Castled to the right
-                        for (int i=3;i<4;i++) {
-                            Position castledRookPosition = board.getPosition(move.getStartPosition().getY(), move.getStartPosition().getX()+i);
-                            if (castledRookPosition.getCurrentPiece()!=null) {
-                                if (castledRookPosition.getCurrentPiece().getPieceType()==PieceType.ROOK && !castledRookPosition.getCurrentPiece().getHasMoved()) {
-  
-                                    board.setPiece(castledRookPosition.getCurrentPiece(), board.getPosition(move.getStartPosition().getY(), move.getStartPosition().getX()+1));
-                                    castledRookPosition.getCurrentPiece().setHasMoved(true); 
-                                    board.setPiece(null, castledRookPosition);
+                        for (int i=3;i<=4;i++) {
+                            if (board.insideBoard(move.getStartPosition().getY(), move.getStartPosition().getX()+i)) {
+                                Position castledRookPosition = board.getPosition(move.getStartPosition().getY(), move.getStartPosition().getX()+i);
+                                if (castledRookPosition.getCurrentPiece()!=null) {
+                                    if (castledRookPosition.getCurrentPiece().getPieceType()==PieceType.ROOK && !castledRookPosition.getCurrentPiece().getHasMoved()) {
     
+                                        board.setPiece(castledRookPosition.getCurrentPiece(), board.getPosition(move.getStartPosition().getY(), move.getStartPosition().getX()+1));
+                                        castledRookPosition.getCurrentPiece().setHasMoved(true); 
+                                        board.setPiece(null, castledRookPosition);
+        
+                                    }
                                 }
                             }
                         }
                     } else { //Castled to the left
-                        for (int i=3;i<4;i++) {
-                            Position castledRookPosition = board.getPosition(move.getStartPosition().getY(), move.getStartPosition().getX()-i);
-                            if (castledRookPosition.getCurrentPiece()!=null) {
-                                if (castledRookPosition.getCurrentPiece().getPieceType()==PieceType.ROOK && !castledRookPosition.getCurrentPiece().getHasMoved()) {
-  
-                                    board.setPiece(castledRookPosition.getCurrentPiece(), board.getPosition(move.getStartPosition().getY(), move.getStartPosition().getX()-1));
-                                    castledRookPosition.getCurrentPiece().setHasMoved(true); 
-                                    board.setPiece(null, castledRookPosition);
-    
+                        for (int i=3;i<=4;i++) {
+                            if (board.insideBoard(move.getStartPosition().getY(), move.getStartPosition().getX()-i)) {
+                                Position castledRookPosition = board.getPosition(move.getStartPosition().getY(), move.getStartPosition().getX()-i);
+                                if (castledRookPosition.getCurrentPiece()!=null) {
+                                    if (castledRookPosition.getCurrentPiece().getPieceType()==PieceType.ROOK && !castledRookPosition.getCurrentPiece().getHasMoved()) {
+      
+                                        board.setPiece(castledRookPosition.getCurrentPiece(), board.getPosition(move.getStartPosition().getY(), move.getStartPosition().getX()-1));
+                                        castledRookPosition.getCurrentPiece().setHasMoved(true); 
+                                        board.setPiece(null, castledRookPosition);
+        
+                                    }
                                 }
-                            }
+                            } 
                         }
                     }
                     break;
